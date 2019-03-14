@@ -11,11 +11,10 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${libs.jpa2-persistence.classpath}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
+                    <file>${file.reference.javax.mail.jar}</file>
                 </library>
                 <library dirs="200">
-                    <file>${libs.MySQLDriver.classpath}</file>
+                    <file>${libs.jpa20-persistence.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

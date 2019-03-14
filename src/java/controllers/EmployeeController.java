@@ -8,7 +8,7 @@ package controllers;
 import daos.GeneralDAO;
 import daos.Interface;
 import java.util.List;
-import mainTools.BCrypt;
+import tools.BCrypt;
 import models.Employee;
 import models.LoginSession;
 import org.hibernate.Session;
