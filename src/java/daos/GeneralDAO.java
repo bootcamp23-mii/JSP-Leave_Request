@@ -19,7 +19,7 @@ import org.hibernate.Transaction;
 
 /**
  *
- * @author Pandu
+ * @author Panji Sadewo
  * @param <T>
  */
 public class GeneralDAO<T> implements Interface<T> {

@@ -10,7 +10,7 @@ import models.Employee;
 
 /**
  *
- * @author Pandu
+ * @author Panji Sadewo
  */
 public interface Interface<T> {
 
