@@ -9,8 +9,62 @@ and open the template in the editor.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+        <script type=""></script>
+        <script type="text/javascript" src="js/boostrap-datepicker.min.js"></script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <form action="" method="POST" style="width: 50%">
+            <div class="form-group">
+                <label for="Jumlah cuti">Mulai Tanggal :</label>
+                <input placeholder="masukkan tanggal Awal" type="text" class="form-control datepicker" name="tgl_awal">
+     
+            </div>
+            <div class="form-group">
+                <label for="Jumlah cuti">Tanggal Selesai :</label>
+                <input placeholder="masukkan tanggal Akhir" type="text" class="form-control datepicker" name="tgl_akhir">
+     
+            </div>  
+            <div class="form-group">
+                <label for="Jumlah cuti">Jumlah Cuti :</label>
+                <input type="text" name="jmlcuti" class="form-control" id="jmlcuti">
+            </div>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+        
+        <table id="hitoryTable" class="table table-responsive" cellspacing='10' style="width: 50%" align ='center' border="1">
+            <thead>
+                <tr>
+                    <th style="width: 10%">No.</th>
+                    <th style="width: 10%">Id</th>
+                    <th style="width: 30%">Name</th>
+                    <th style="width: 30%">Tanggal Mulai</th>
+                    <th style="width: 30%">Tanggal Selesai</th>
+                    <th style="width: 30%">Lama Cuti</th>
+                </tr>
+            </thead>
+            <tbody>
+            
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+
+<script type="text/javascript">
+ $(function(){
+  $(".datepicker").datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true,
+      todayHighlight: true,
+  });
+ });
+</script>
     </body>
 </html>
+

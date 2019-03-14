@@ -77,6 +77,24 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
+    public Employee(String id, String name, String gendertype, BigInteger leavetotal, String email, String password, MarriedStatus marriedstatus, Employee idmanager, Job job) {
+        this.id = id;
+        this.name = name;
+        this.gendertype = gendertype;
+        this.leavetotal = leavetotal;
+        this.email = email;
+        this.password = password;
+        this.marriedstatus = marriedstatus;
+        this.idmanager = idmanager;
+        this.job = job;
+    }
+
+    public Employee(String id, BigInteger leavetotal) {
+        this.id = id;
+        this.leavetotal = leavetotal;
+    }
+    
+
     public Employee(String id) {
         this.id = id;
     }
