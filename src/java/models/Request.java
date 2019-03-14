@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author AdhityaWP
+ * @author acer
  */
 @Entity
 @Table(name = "tb_m_request")
@@ -66,6 +66,16 @@ public class Request implements Serializable {
     private List<RequestStatus> requestStatusList;
 
     public Request() {
+    }
+    
+      public Request(String id, Date startdate, Date enddate, BigInteger total, String status, Employee employee, LeaveType leavetype) {
+        this.id = id;
+        this.startdate = startdate;
+        this.enddate = enddate;
+        this.total = total;
+        this.status = status;
+        this.employee = employee;
+        this.leavetype = leavetype;
     }
 
     public Request(String id) {

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author AdhityaWP
+ * @author acer
  */
 @Entity
 @Table(name = "tb_t_request_status")
@@ -55,6 +55,16 @@ public class RequestStatus implements Serializable {
     public RequestStatus() {
     }
 
+    public RequestStatus(String id, Date datetime, String description, Request request, Status status) {
+        this.id = id;
+        this.datetime = datetime;
+        this.description = description;
+        this.request = request;
+        this.status = status;
+    }
+
+    
+    
     public RequestStatus(String id) {
         this.id = id;
     }

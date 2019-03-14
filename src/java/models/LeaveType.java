@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author AdhityaWP
+ * @author acer
  */
 @Entity
 @Table(name = "tb_m_leave_type")
@@ -45,6 +45,12 @@ public class LeaveType implements Serializable {
     public LeaveType() {
     }
 
+    public LeaveType(String id, String type) {
+        this.id = id;
+        this.type = type;
+    }
+
+    
     public LeaveType(String id) {
         this.id = id;
     }
