@@ -28,7 +28,7 @@ public class LeaveTypeController implements LeaveTypeControllerInterface{
     }
 
     @Override
-    public List<models.LeaveType> getAll(String s) {
+    public List<models.LeaveType> getAll() {
         return cdao.getData("");
     }
 

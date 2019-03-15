@@ -14,7 +14,7 @@ import models.LeaveType;
  */
 public interface LeaveTypeControllerInterface {
      public LeaveType getId(String s);
-    public List<LeaveType> getAll(String s);
+    public List<LeaveType> getAll();
     
     public String save(String id, String type);
     public String update(String id, String type);
