@@ -23,7 +23,7 @@ import daos.Interface;
  * @author acer
  */
 public class RequestController implements RequestControllerInterface{
-    private final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private final Interface <Request> cdao;
 
     public RequestController(SessionFactory sessionFactory) {

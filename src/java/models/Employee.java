@@ -7,6 +7,7 @@ package models;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,6 +21,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -40,6 +43,16 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Employee.findByPassword", query = "SELECT e FROM Employee e WHERE e.password = :password")})
 public class Employee implements Serializable {
 
+    @Column(name = "GENDERTYPE")
+    private Boolean gendertype;
+    @Lob
+    @Column(name = "PHOTO")
+    private byte[] photo;
+    @Basic(optional = false)
+    @Column(name = "JOINDATE")
+    @Temporal(TemporalType.DATE)
+    private Date joindate;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -47,17 +60,12 @@ public class Employee implements Serializable {
     private String id;
     @Column(name = "NAME")
     private String name;
-    @Column(name = "GENDERTYPE")
-    private String gendertype;
     @Column(name = "LEAVETOTAL")
     private BigInteger leavetotal;
     @Column(name = "EMAIL")
     private String email;
     @Column(name = "PASSWORD")
     private String password;
-    @Lob
-    @Column(name = "PHOTO")
-    private byte[] photo;
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<Request> requestList;
     @JoinColumn(name = "MARRIEDSTATUS", referencedColumnName = "ID")
@@ -77,7 +85,7 @@ public class Employee implements Serializable {
     public Employee() {
     }
 
-    public Employee(String id, String name, String gendertype, BigInteger leavetotal, String email, String password, MarriedStatus marriedstatus, Employee idmanager, Job job) {
+    public Employee(String id, String name, boolean gendertype, BigInteger leavetotal, String email, String password, MarriedStatus marriedstatus, Employee idmanager, Job job, Date Joindate) {
         this.id = id;
         this.name = name;
         this.gendertype = gendertype;
@@ -87,6 +95,7 @@ public class Employee implements Serializable {
         this.marriedstatus = marriedstatus;
         this.idmanager = idmanager;
         this.job = job;
+        this.joindate = Joindate;
     }
 
     public Employee(String id, BigInteger leavetotal) {
@@ -115,13 +124,6 @@ public class Employee implements Serializable {
         this.name = name;
     }
 
-    public String getGendertype() {
-        return gendertype;
-    }
-
-    public void setGendertype(String gendertype) {
-        this.gendertype = gendertype;
-    }
 
     public BigInteger getLeavetotal() {
         return leavetotal;
@@ -147,13 +149,6 @@ public class Employee implements Serializable {
         this.password = password;
     }
 
-    public byte[] getPhoto() {
-        return photo;
-    }
-
-    public void setPhoto(byte[] photo) {
-        this.photo = photo;
-    }
 
     @XmlTransient
     public List<Request> getRequestList() {
@@ -229,6 +224,30 @@ public class Employee implements Serializable {
     @Override
     public String toString() {
         return "models.Employee[ id=" + id + " ]";
+    }
+
+    public Boolean getGendertype() {
+        return gendertype;
+    }
+
+    public void setGendertype(Boolean gendertype) {
+        this.gendertype = gendertype;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public Date getJoindate() {
+        return joindate;
+    }
+
+    public void setJoindate(Date joindate) {
+        this.joindate = joindate;
     }
     
 }

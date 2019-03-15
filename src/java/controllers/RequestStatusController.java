@@ -24,7 +24,7 @@ import daos.Interface;
  * @author acer
  */
 public class RequestStatusController implements RequestStatusControllerInterface{
-     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yy");
+     private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private final Interface<RequestStatus> spdao;
 
     public RequestStatusController(SessionFactory sessionFactory) {

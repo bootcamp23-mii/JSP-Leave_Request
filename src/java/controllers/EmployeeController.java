@@ -8,7 +8,11 @@ package controllers;
 import daos.GeneralDAO;
 import daos.Interface;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import models.Employee;
 import models.Job;
 import models.MarriedStatus;
@@ -22,6 +26,7 @@ import models.LoginSession;
  * @author AdhityaWP
  */
 public class EmployeeController implements EmployeeControllerInterface{
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private Interface<Employee> edao;
     public EmployeeController(SessionFactory sessionFactory) {
         edao = new GeneralDAO<>(sessionFactory, new Employee());
@@ -29,10 +34,14 @@ public class EmployeeController implements EmployeeControllerInterface{
     
 
     @Override
-    public String register(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs) {
+    public String register(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs, String Date) {
         String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
-        if (edao.saveOrDelete(new Employee(id, nama, jenisKelamin, new BigInteger(jumlahCuti), email, passwordHash, new MarriedStatus(statusNikah), new Employee(idManager), new Job(jobs)), true)) {
-            return "Selamat penambahan karyawan berhasil";
+        try {
+            if (edao.saveOrDelete(new Employee(id, nama, new Boolean(jenisKelamin), new BigInteger(jumlahCuti), email, passwordHash, new MarriedStatus(statusNikah), new Employee(idManager), new Job(jobs), sdf.parse(Date)), true)) {
+                return "Selamat penambahan karyawan berhasil";
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "Maaf coba lagi";
     }
@@ -97,9 +106,14 @@ public class EmployeeController implements EmployeeControllerInterface{
     }
 
     @Override
-    public String update(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs) {
-        if (edao.saveOrDelete(new Employee(id, nama, jenisKelamin, new BigInteger(jumlahCuti), email, password, new MarriedStatus(statusNikah), new Employee(idManager), new Job(jobs)), true)) {
-            return "SUCCESSFULLY UPDATE YOUR DATA";
+    public String update(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs, String Date, String JoinDate) {
+        String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
+        try {
+            if (edao.saveOrDelete(new Employee(id, nama, new Boolean(jenisKelamin), new BigInteger(jumlahCuti), email, passwordHash, new MarriedStatus(statusNikah), new Employee(idManager), new Job(jobs), sdf.parse(JoinDate)), true)) {
+                return "SUCCESSFULLY UPDATE YOUR DATA";
+            }
+        } catch (ParseException ex) {
+            Logger.getLogger(EmployeeController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "FAIL TO UPDATE";
     }
