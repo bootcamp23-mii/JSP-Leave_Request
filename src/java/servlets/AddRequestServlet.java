@@ -58,7 +58,7 @@ public class AddRequestServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String id = LoginSession.getIdUsername();
             Lty = lti.getAll();
-            Req = rci.getByEmployee(id);
+            Req = rci.getAll("");
             request.getSession().setAttribute("LeaveType", Lty);
             request.getSession().setAttribute("Request", Req);
             response.sendRedirect("AddRequest.jsp");

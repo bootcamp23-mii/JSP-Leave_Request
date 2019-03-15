@@ -4,6 +4,9 @@
     Author     : acer
 --%>
 
+<%@page import="models.Request"%>
+<%@page import="java.util.List"%>
+<%@page import="models.LeaveType"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -169,8 +172,12 @@
                                     <tr>
                                         <td>Leave Type</td>
                                         <td><select name="" />
-
-
+                                            <% for (LeaveType elem : (List<LeaveType>) session.getAttribute("LeaveType")) {
+                                                    out.print("<option "
+                                                            + "value=\"" + elem.getId() + "\" "
+                                                            + (elem.getId().equals(session.getAttribute("LeaveType")) ? "selected" : "") + ">"
+                                                            + elem.getType() + "</option>");
+                                                }%>
                                             </select></td>
                                     </tr>
                                     <tr>
@@ -190,6 +197,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <%int j = 1;
+                                        for (Request elem : (List<Request>) session.getAttribute("Request")) {%>
+                                    <tr>
+                                        <td><%= j++ %></td>
+                                        <td><%= elem.getId() %></td>
+                                        <td><%= elem.getStartdate() %></td>
+                                        <td><%= elem.getStatus() %></td>
+                                    </tr>
+                                    <%} %>
 
                                 </tbody>
                             </table>
