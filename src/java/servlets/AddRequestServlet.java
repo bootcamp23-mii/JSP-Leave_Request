@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +31,10 @@ import tools.HibernateUtil;
  *
  * @author AdhityaWP
  */
+
+@WebServlet(name = "AddRequestServlet", urlPatterns = {"/AddRequestServlet"})
+
+
 public class AddRequestServlet extends HttpServlet {
     EmployeeControllerInterface eci = new EmployeeController(HibernateUtil.getSessionFactory());
     RequestControllerInterface rci = new RequestController(HibernateUtil.getSessionFactory());
@@ -56,7 +61,7 @@ public class AddRequestServlet extends HttpServlet {
             Req = rci.getByEmployee(id);
             request.getSession().setAttribute("LeaveType", Lty);
             request.getSession().setAttribute("Request", Req);
-            response.sendRedirect("DashboardUsers.jsp");
+            response.sendRedirect("AddRequest.jsp");
         }
     }
 
