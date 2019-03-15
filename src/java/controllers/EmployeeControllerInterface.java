@@ -5,12 +5,39 @@
  */
 package controllers;
 
+import java.util.List;
 import models.Employee;
 
 /**
  *
- * @author Panji Sadewo
+ * @author AdhityaWP
  */
 public interface EmployeeControllerInterface {
-    public boolean Login(String username, String Password);
+
+    public String register(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs);
+
+    public boolean login(String username, String Password);
+
+    public List<Employee> getAll();
+
+    public List<Employee> getKar(String key);
+
+    public List<Employee> getByJob(String key);
+
+    public List<Employee> getKarByMang(String key);
+
+    public List<Employee> getIdKar(String key);
+
+    public List<Employee> getAll(String key);
+
+    public Employee getById(String key);
+
+    public String delete(String key);
+
+    public String update(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs);
+
+    public String literallyUpdate(String id, String jumlahCuti);
+
+    
+
 }

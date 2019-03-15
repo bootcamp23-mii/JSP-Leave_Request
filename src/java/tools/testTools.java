@@ -27,7 +27,7 @@ public class testTools {
         EmployeeControllerInterface eci = new EmployeeController(sessionFactory);
         GeneralDAO gdao = new GeneralDAO(sessionFactory, eci);
         
-        if (eci.Login("Alfa", "asd")) {
+        if (eci.login("Alfa", "asd")) {
             System.out.println("Login berhasil");
         } else {
             System.out.println("Login gagal");
