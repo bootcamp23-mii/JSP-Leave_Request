@@ -11,9 +11,18 @@ import controllers.RequestController;
 import controllers.RequestControllerInterface;
 import controllers.EmployeeController;
 import controllers.EmployeeControllerInterface;
+import controllers.LeaveHistoryController;
+import controllers.LeaveHistoryControllerInterface;
+import controllers.RequestStatusController;
+import controllers.RequestStatusControllerInterface;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,6 +33,7 @@ import models.LeaveHistory;
 import models.LeaveType;
 import models.LoginSession;
 import models.Request;
+import models.RequestStatus;
 import sun.nio.cs.HistoricallyNamedCharset;
 import tools.HibernateUtil;
 
@@ -31,17 +41,19 @@ import tools.HibernateUtil;
  *
  * @author AdhityaWP
  */
-
 @WebServlet(name = "AddRequestServlet", urlPatterns = {"/AddRequestServlet"})
 
-
 public class AddRequestServlet extends HttpServlet {
+
     EmployeeControllerInterface eci = new EmployeeController(HibernateUtil.getSessionFactory());
-    RequestControllerInterface rci = new RequestController(HibernateUtil.getSessionFactory());
+    RequestStatusControllerInterface rci = new RequestStatusController(HibernateUtil.getSessionFactory());
+    RequestControllerInterface rc = new RequestController(HibernateUtil.getSessionFactory());
     LeaveTypeControllerInterface lti = new LeaveTypeController(HibernateUtil.getSessionFactory());
+    LeaveHistoryControllerInterface lhi = new LeaveHistoryController(HibernateUtil.getSessionFactory());
     Employee Emp = null;
-    List<Request> Req = null;
+    List<RequestStatus> Req = null;
     List<LeaveType> Lty = null;
+    boolean isS1 = true;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -58,7 +70,7 @@ public class AddRequestServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String id = LoginSession.getIdUsername();
             Lty = lti.getAll();
-            Req = rci.getAll("");
+            Req = rci.getHistory(id, isS1);
             request.getSession().setAttribute("LeaveType", Lty);
             request.getSession().setAttribute("Request", Req);
             response.sendRedirect("AddRequest.jsp");
@@ -91,8 +103,29 @@ public class AddRequestServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (rci.save("P600", request.getParameter("startdate"), request.getParameter("enddate"), request.getParameter("totaldate"), request.getParameter(LoginSession.getIdUsername()),request.getParameter("leaveType"), "Diproses") != null) {
-            processRequest(request, response);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String id = LoginSession.getIdUsername();
+        String start = "";
+        String end = "";
+        System.out.println(request.getParameter("startdate"));
+        try {
+            start = dateFormat.format(dateFormat.parse(request.getParameter("startdate")));
+            end = dateFormat.format(dateFormat.parse(request.getParameter("enddate")));
+        } catch (ParseException ex) {
+            Logger.getLogger(AddRequestServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Date now = new Date();
+        String hariini = dateFormat.format(now);
+        rc.save("", start, end, request.getParameter("total"), "Diproses", id, request.getParameter("leavetype"));
+        Request idnext = rc.getLastId();
+        if (!request.getParameter("isS1").equals("0")){
+            isS1 = false;
+        };
+
+        if (idnext != null) {
+            if (rci.insert("", hariini, "", idnext.getId() , "S1") != null && lhi.save("", hariini, request.getParameter("total"), "KC4", id) != null ) {
+                processRequest(request, response);
+            }
         }
     }
 

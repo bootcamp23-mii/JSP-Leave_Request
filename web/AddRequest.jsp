@@ -4,6 +4,8 @@
     Author     : acer
 --%>
 
+<%@page import="models.RequestStatus"%>
+<%@page import="models.LoginSession"%>
 <%@page import="models.Request"%>
 <%@page import="java.util.List"%>
 <%@page import="models.LeaveType"%>
@@ -159,19 +161,19 @@
                                 <tbody>
                                     <tr>
                                         <td>Start Leave</td>
-                                        <td><input type="date"/></td>
+                                        <td><input type="date" name="startdate"/></td>
                                     </tr>
                                     <tr>
                                         <td>End Leave</td>
-                                        <td><input type="date"/></td>
+                                        <td><input type="date" name="enddate"/></td>
                                     </tr>
                                     <tr>
                                         <td>Total</td>
-                                        <td><input type="text" name="" value=""/></td>
+                                        <td><input type="text" name="total"/></td>
                                     </tr>
                                     <tr>
                                         <td>Leave Type</td>
-                                        <td><select name="" />
+                                        <td><select name="leavetype" />
                                             <% for (LeaveType elem : (List<LeaveType>) session.getAttribute("LeaveType")) {
                                                     out.print("<option "
                                                             + "value=\"" + elem.getId() + "\" "
@@ -185,9 +187,18 @@
                                     </tr>
                                 </tbody>
                             </table>
-                        </form>
+                            <div>
+                                <select name="isS1">
+                                    <option value="0">Sedang Diproses</option>
+                                    <option value="1">Telah Diproses</option>
+                                </select>
+                            </div>
+
+                        </form> 
+                        <% out.print(LoginSession.getIdUsername()); %>
                         <div>
                             <table id="" class=" table table-striped" cellspacing='30' align ='center' border="1">
+
                                 <thead>
                                     <tr>
                                         <th>No.</th>
@@ -198,14 +209,14 @@
                                 </thead>
                                 <tbody>
                                     <%int j = 1;
-                                        for (Request elem : (List<Request>) session.getAttribute("Request")) {%>
+                                        for (RequestStatus elem : (List<RequestStatus>) session.getAttribute("Request")) {%>
                                     <tr>
-                                        <td><%= j++ %></td>
-                                        <td><%= elem.getId() %></td>
-                                        <td><%= elem.getStartdate() %></td>
-                                        <td><%= elem.getStatus() %></td>
+                                        <td><%= j++%></td>
+                                        <td><%= elem.getRequest().getId()%></td>
+                                        <td><%= elem.getDatetime()%></td>
+                                        <td><%= elem.getStatus().getType()%></td>
                                     </tr>
-                                    <%} %>
+                                    <%}%>
 
                                 </tbody>
                             </table>

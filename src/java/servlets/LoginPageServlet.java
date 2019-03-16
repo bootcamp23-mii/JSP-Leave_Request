@@ -72,7 +72,7 @@ public class LoginPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (eci.login(request.getParameter("usernameLogin"), request.getParameter("passwordLogin"))) {
-            LoginSession.setIdUsername(request.getParameter("usernameLogin"));
+//            LoginSession.setIdUsername(request.getParameter("usernameLogin"));
             response.sendRedirect("DashboardAdmin.jsp");
 //            if (request.getParameter("usernameLogin").equals(11201)) {
 //                response.sendRedirect("DashboardAdmin.jsp");

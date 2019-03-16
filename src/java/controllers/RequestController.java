@@ -98,4 +98,9 @@ public class RequestController implements RequestControllerInterface{
        return cdao.getByKar(key); //To change body of generated methods, choose Tools | Templates.
     }
 
+    @Override
+    public Request getLastId() {
+       return cdao.getLastId();
+    }
+
 }

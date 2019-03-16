@@ -7,8 +7,15 @@ package tools;
 
 import controllers.EmployeeController;
 import controllers.EmployeeControllerInterface;
+import controllers.RequestController;
+import controllers.RequestControllerInterface;
+import controllers.RequestStatusController;
+import controllers.RequestStatusControllerInterface;
 import daos.GeneralDAO;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import models.Request;
 import org.hibernate.SessionFactory;
 import tools.HibernateUtil;
 
@@ -26,13 +33,21 @@ public class testTools {
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         EmployeeControllerInterface eci = new EmployeeController(sessionFactory);
         GeneralDAO gdao = new GeneralDAO(sessionFactory, eci);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        RequestStatusControllerInterface rci = new RequestStatusController(HibernateUtil.getSessionFactory());
+        RequestControllerInterface rc = new RequestController(HibernateUtil.getSessionFactory());
+        Date now = new Date();
         
-        if (eci.login("Alfa", "asd")) {
-            System.out.println("Login berhasil");
-        } else {
-            System.out.println("Login gagal");
-
-        }
+        
+        String hariini = dateFormat.format(now);
+        Request idnext = rc.getLastId();
+        System.out.println(rci.insert("", hariini, "", idnext.getId() , "S1")); 
+//        if (eci.login("Alfa", "asd")) {
+//            System.out.println("Login berhasil");
+//        } else {
+//            System.out.println("Login gagal");
+//
+//        }
         
     }
     

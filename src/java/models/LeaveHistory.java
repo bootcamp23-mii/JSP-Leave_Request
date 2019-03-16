@@ -60,6 +60,14 @@ public class LeaveHistory implements Serializable {
         this.id = id;
     }
 
+    public LeaveHistory(String id, Date datetime, BigInteger total, LeaveDesc description, Employee employee) {
+        this.id = id;
+        this.datetime = datetime;
+        this.total = total;
+        this.description = description;
+        this.employee = employee;
+    }
+
     public String getId() {
         return id;
     }

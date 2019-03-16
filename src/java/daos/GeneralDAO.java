@@ -253,4 +253,20 @@ public class GeneralDAO<T> implements Interface<T> {
         return obj;
     }
 
+    @Override
+    public T getLastId() {
+        T obj = null;
+        session = this.factory.openSession();
+        transaction = session.beginTransaction();
+        try {
+            obj = (T) session.createQuery("FROM " + t.getClass().getSimpleName() + " WHERE id IN ( SELECT MAX(id) FROM " + t.getClass().getSimpleName()+" )").uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return obj;
+    }
+
 }

@@ -35,4 +35,6 @@ public interface Interface<T> {
     public List<T> login(Object keyword);
 
     public T getById(Object id);
+
+    public T getLastId();
 }

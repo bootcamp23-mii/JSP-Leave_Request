@@ -22,6 +22,8 @@ public interface RequestControllerInterface {
      public List<Request> getAll(String key);
     
     public List<Request> getData(String key);
+    
+    public Request getLastId();
 
     public String save(String id, String start, String end, String total, String status ,String employee, String leaveType);
     public String update(String id, String start, String end, String total,String status, String employee, String leaveType);
