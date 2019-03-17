@@ -39,15 +39,15 @@ public class testTools {
         Date now = new Date();
         
         
-        String hariini = dateFormat.format(now);
-        Request idnext = rc.getLastId();
-        System.out.println(rci.insert("", hariini, "", idnext.getId() , "S1")); 
-//        if (eci.login("Alfa", "asd")) {
-//            System.out.println("Login berhasil");
-//        } else {
-//            System.out.println("Login gagal");
-//
-//        }
+//        String hariini = dateFormat.format(now);
+//        Request idnext = rc.getLastId();
+//        System.out.println(rci.insert("", hariini, "", idnext.getId() , "S1")); 
+        if (eci.login("Alfa", "qwe")) {
+            System.out.println("Login berhasil");
+        } else {
+            System.out.println("Login gagal");
+
+        }
         
     }
     
