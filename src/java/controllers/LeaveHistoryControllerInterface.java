@@ -5,11 +5,17 @@
  */
 package controllers;
 
+import java.util.List;
+import models.LeaveHistory;
+
 /**
  *
  * @author AdhityaWP
  */
 public interface LeaveHistoryControllerInterface {
     public String save(String id, String datettime, String total, String description, String Employee);
-    
+    public LeaveHistory getById(String id);
+    public List<LeaveHistory> getAll(String key);
+    public List<LeaveHistory> getData(String key);
+    public String delete(String id);
 }

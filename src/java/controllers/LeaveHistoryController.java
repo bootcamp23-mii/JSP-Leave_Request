@@ -10,6 +10,7 @@ import daos.Interface;
 import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Employee;
@@ -43,5 +44,29 @@ public class LeaveHistoryController implements LeaveHistoryControllerInterface{
         }
         return "FAIL";
     }
+    @Override
+     public List<LeaveHistory> getAll(String key) {
+        return cdao.getData("");
+    }
+
+    @Override
+    public LeaveHistory getById(String id) {
+        return cdao.getById(id);
+    }
     
+     @Override
+    public List<LeaveHistory> getData(String key) {
+        return cdao.getData(key);
+    }
+    
+    
+     @Override
+    public String delete(String id) {
+        if (cdao.saveOrDelete(new LeaveHistory(id), false)) {
+            return "RECORD SUCCESSFULLY DELETED";
+        } else {
+            return "DELETE FAILED";
+        }
+    }
+     
 }
