@@ -53,7 +53,7 @@ public class AddRequestServlet extends HttpServlet {
     Employee Emp = null;
     List<RequestStatus> Req = null;
     List<LeaveType> Lty = null;
-    boolean isS1 = true;
+    boolean isS1 = false;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

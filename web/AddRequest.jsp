@@ -168,7 +168,7 @@
                                 </tr>
                                 <tr>
                                     <td>Total</td>
-                                    <td><p id="total">0</p></td>
+                                    <td><input type="text" id="total" name="total" readonly></td>
                                 </tr>
                                 <tr>
                                     <td>Leave Type</td>
@@ -277,7 +277,7 @@
                 var startTahun = start.split("-")[2];
                 var endTahun = end.split("-")[2];
                 var totalCuti = (endTanggal-startTanggal+((endBulan - startBulan)*30)+((endTahun - startTahun)*360));
-                document.getElementById("total").innerHTML = totalCuti.toString();
+                document.getElementById("total").value = totalCuti.toString();
             });
             $("#enddate").click(function (){
                 var start = document.getElementById("startdate").value;
@@ -289,7 +289,7 @@
                 var startTahun = start.split("-")[2];
                 var endTahun = end.split("-")[2];
                 var totalCuti = (endTanggal-startTanggal+((endBulan - startBulan)*30)+((endTahun - startTahun)*360));
-                document.getElementById("total").innerHTML = totalCuti.toString();
+                document.getElementById("total").value = totalCuti.toString();
             });
         </script>
 </body>
