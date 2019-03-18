@@ -29,8 +29,8 @@ import tools.HibernateUtil;
 @WebServlet(name = "HistoryUserServlet", urlPatterns = {"/HistoryUserServlet"})
 public class HistoryUserServlet extends HttpServlet {
 
-    RequestStatusControllerInterface rc = new RequestStatusController(HibernateUtil.getSessionFactory());
-    List<RequestStatus> Req = null;
+    RequestControllerInterface rc = new RequestController(HibernateUtil.getSessionFactory());
+    List<Request> Req = null;
     Request ree = null;
 
     /**
@@ -48,7 +48,7 @@ public class HistoryUserServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String id = LoginSession.getIdUsername();
-            Req = rc.getAllHistory(id);
+            Req = rc.getAll(id);
             request.getSession().setAttribute("Request", Req);
             response.sendRedirect("HistoryUsers.jsp");
         }
@@ -67,7 +67,20 @@ public class HistoryUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String action = request.getParameter("action");
-        
+         if (action != null) {
+            if (action.equalsIgnoreCase("delete")) {
+                rc.delete(request.getParameter("id"));
+            } else if (action.equalsIgnoreCase("update")) {
+                Request r = rc.getById(request.getParameter("id"));
+                request.getSession().setAttribute("id", r.getId());
+                request.getSession().setAttribute("start", r.getStartdate());
+                request.getSession().setAttribute("end", r.getEnddate());
+                request.getSession().setAttribute("total", r.getTotal());
+                request.getSession().setAttribute("leavetype", r.getLeavetype().getType());
+                request.getSession().setAttribute("employee", r.getEmployee().getName());
+                request.getSession().setAttribute("status", r.getStatus());
+            }
+        }
         processRequest(request, response);
     }
 
@@ -82,7 +95,10 @@ public class HistoryUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+            if (rc.save(request.getParameter("id"), request.getParameter("start"), request.getParameter("end"), request.getParameter("total"), request.getParameter("leavetype"),request.getParameter("employee"),
+                request.getParameter("status"))!=null) {
             processRequest(request, response);
+        }
     }
 
     /**
