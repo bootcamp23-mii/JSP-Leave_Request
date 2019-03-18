@@ -31,7 +31,6 @@ public class ApprovalServlet extends HttpServlet {
     RequestControllerInterface rc = new RequestController(HibernateUtil.getSessionFactory());
     RequestStatusControllerInterface rsci = new RequestStatusController(HibernateUtil.getSessionFactory());
     List<Request> Req = null;
-    String id = LoginSession.getIdUsername();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,7 +46,7 @@ public class ApprovalServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            Req = rc.getByEmployee(id);
+            Req = rc.getByEmployee(request.getSession().getAttribute("idLogin").toString());
             request.getSession().setAttribute("Request", Req);
             response.sendRedirect("Approval.jsp");
         }

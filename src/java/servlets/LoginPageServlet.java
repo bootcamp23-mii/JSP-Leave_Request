@@ -72,17 +72,17 @@ public class LoginPageServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (eci.login(request.getParameter("usernameLogin"), request.getParameter("passwordLogin"))) {
-            System.out.println(LoginSession.getRoleUsername());
-            if (LoginSession.getRoleUsername().equals("J4")) {
+            request.getSession().setAttribute("idLogin", LoginSession.getIdUsername());
+            request.getSession().setAttribute("roleLogin", LoginSession.getRoleUsername());
+            if (request.getSession().getAttribute("roleLogin").equals("J4")) {
                 response.sendRedirect("DashboardAdminServlet");
-            } else if(LoginSession.getRoleUsername().equals("J2")){
+            } else if (request.getSession().getAttribute("roleLogin").equals("J2")) {
                 response.sendRedirect("HistoryAdminServlet");
-            } else if(LoginSession.getRoleUsername().equals("J3")){
+            } else if (request.getSession().getAttribute("roleLogin").equals("J3")) {
                 response.sendRedirect("HistoryUserServlet");
             }
         } else {
             processRequest(request, response);
-//                response.sendRedirect("LoginPage.jsp");
         }
     }
 
