@@ -5,8 +5,6 @@
  */
 package servlets;
 
-import controllers.EmployeeController;
-import controllers.EmployeeControllerInterface;
 import controllers.RequestController;
 import controllers.RequestControllerInterface;
 import java.io.IOException;
@@ -17,23 +15,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import models.Employee;
-import models.LoginSession;
 import models.Request;
 import tools.HibernateUtil;
 
 /**
  *
- * @author Panji Sadewo
+ * @author acer
  */
 @WebServlet(name = "ApprovalServlet", urlPatterns = {"/ApprovalServlet"})
 public class ApprovalServlet extends HttpServlet {
-
-    RequestControllerInterface rci = new RequestController(HibernateUtil.getSessionFactory());
-    EmployeeControllerInterface eci = new EmployeeController(HibernateUtil.getSessionFactory());
-    List<Request> data = null;
-    String idBawahan = "";
-
+ RequestControllerInterface rc = new RequestController(HibernateUtil.getSessionFactory());
+           List<Request> Req = null;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,12 +39,9 @@ public class ApprovalServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-//            for (Employee employee : eci.getKarByMang(LoginSession.getIdUsername())) {
-//                for (Request request1 : rci.getByEmployee(employee.getId())) {
-//                    data = (List<Request>) request1;
-//                    request.getSession().setAttribute("data", data);
-//                }
-//            }
+            /* TODO output your page here. You may use following sample code. */
+             Req = rc.getAll("");
+            request.getSession().setAttribute("Request", Req);
             response.sendRedirect("Approval.jsp");
         }
     }
@@ -69,6 +58,20 @@ public class ApprovalServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         String action = request.getParameter("action");
+         if (action != null) {
+            if (action.equalsIgnoreCase("delete")) {
+                rc.delete(request.getParameter("id"));
+            } else if (action.equalsIgnoreCase("update")) {
+                Request r = rc.getById(request.getParameter("id"));
+                request.getSession().setAttribute("id", r.getId());
+                request.getSession().setAttribute("start", r.getStartdate());
+                request.getSession().setAttribute("end", r.getEnddate());
+                request.getSession().setAttribute("total", r.getTotal());
+                request.getSession().setAttribute("leavetype", r.getLeavetype().getType());
+                request.getSession().setAttribute("status", r.getStatus());
+            }
+        }
         processRequest(request, response);
     }
 
@@ -83,7 +86,10 @@ public class ApprovalServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+          if (rc.save(request.getParameter("id"), request.getParameter("start"), request.getParameter("end"), request.getParameter("total"), request.getParameter("leavetype"),request.getParameter("employee"),
+                request.getParameter("status"))!=null) {
+            processRequest(request, response);
+        }
     }
 
     /**
