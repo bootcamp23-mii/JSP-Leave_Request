@@ -43,7 +43,7 @@ public class RequestStatusController implements RequestStatusControllerInterface
 
     @Override
     public List<RequestStatus> getAll(String key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return spdao.getAllHistory(key);
     }
 
     @Override
@@ -77,6 +77,20 @@ public class RequestStatusController implements RequestStatusControllerInterface
             Logger.getLogger(RequestController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "FAIL";
+    }
+    
+     @Override
+    public String delete(String key) {
+        if (spdao.saveOrDelete(new RequestStatus(key), false)) {
+            return "RECORD SUCCESSFULLY DELETED";
+        } else {
+            return "DELETE FAILED";
+        }
+    }
+
+    @Override
+    public List<RequestStatus> getAllHistory(String id) {
+        return spdao.getAllHistory(id);
     }
 
     

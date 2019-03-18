@@ -42,12 +42,15 @@ public class testTools {
 //        String hariini = dateFormat.format(now);
 //        Request idnext = rc.getLastId();
 //        System.out.println(rci.insert("", hariini, "", idnext.getId() , "S1")); 
-        if (eci.login("Alfa", "qwe")) {
-            System.out.println("Login berhasil");
-        } else {
-            System.out.println("Login gagal");
 
-        }
+        System.out.println(rci.getAllHistory("11201"));
+//
+//        if (eci.login("Alfa", "qwe")) {
+//            System.out.println("Login berhasil");
+//        } else {
+//            System.out.println("Login gagal");
+//
+//        }
         
     }
     

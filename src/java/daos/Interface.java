@@ -29,7 +29,9 @@ public interface Interface<T> {
     public List<T> getKarType(Object keyword);
 
     public List<T> getHistory(Object keyword, Boolean status);
-
+    
+    public List<T> getAllHistory(Object keyword);
+    
     public List<T> getHistoryByMang(Object keyword, Boolean status);
 
     public List<T> login(Object keyword);

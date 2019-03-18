@@ -259,7 +259,7 @@ public class GeneralDAO<T> implements Interface<T> {
         session = this.factory.openSession();
         transaction = session.beginTransaction();
         try {
-            obj = (T) session.createQuery("FROM " + t.getClass().getSimpleName() + " WHERE id IN ( SELECT MAX(id) FROM " + t.getClass().getSimpleName()+" )").uniqueResult();
+            obj = (T) session.createQuery("FROM " + t.getClass().getSimpleName() + " WHERE id IN ( SELECT MAX(id) FROM " + t.getClass().getSimpleName() + " )").uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
             if (transaction != null) {
@@ -267,6 +267,24 @@ public class GeneralDAO<T> implements Interface<T> {
             }
         }
         return obj;
+    }
+
+    @Override
+    public List<T> getAllHistory(Object keyword) {
+        List<T> obj = new ArrayList<>();
+        session = this.factory.openSession();
+        transaction = session.beginTransaction();
+        try {
+//           
+            obj = session.createQuery("from RequestStatus where request in(from Request where employee = '" + keyword + "') order by datetime desc").list();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return obj; //To change body of generated methods, choose Tools | Templates.        
     }
 
 }

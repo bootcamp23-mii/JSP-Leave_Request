@@ -4,6 +4,8 @@
     Author     : acer
 --%>
 
+<%@page import="models.LoginSession"%>
+<%@page import="models.RequestStatus"%>
 <%@page import="models.Request"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -22,23 +24,24 @@
                                 <tr>
                                     <th>No</th>
 <!--                               <th>ID</th>-->
-                                    <th>Start</th>
-                                    <th>End</th>
+                                    <th>Id</th>
+                                    <th>Date Time</th>
                                     <th>Total</th>
                                     <th>Leave Type</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
+                            <% out.print(LoginSession.getIdUsername()); %>
                             <tbody>
                                     <%int j = 1;
-                                        for (Request elem : (List<Request>) session.getAttribute("Request")) {%>
+                                        for (RequestStatus elem : (List<RequestStatus>) session.getAttribute("Request")) {%>
                                     <tr>
                                         <td><%= j++%></td>                                      
-                                        <td><%= elem.getStartdate()%></td>
-                                        <td><%= elem.getEnddate()%></td>
-                                        <td><%= elem.getTotal()%></td>
-                                        <td><%= elem.getLeavetype().getType()%></td>
-                                        <td><%= elem.getStatus()%></td>
+                                        <td><%= elem.getId()%></td>
+                                        <td><%= elem.getDatetime()%></td>
+                                        <td><%= elem.getRequest().getTotal() %> </td>
+                                        <td><%= elem.getRequest().getLeavetype().getType() %></td>
+                                        <td><%= elem.getStatus().getType() %></td>
                                     </tr>
                                     <%}%>
                             </tbody>

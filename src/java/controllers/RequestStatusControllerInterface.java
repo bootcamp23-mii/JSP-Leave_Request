@@ -16,6 +16,8 @@ public interface RequestStatusControllerInterface {
     public List <RequestStatus> getHistory(String keyword, Boolean status);
 
     public List<RequestStatus> getHistoryByMang(String id, Boolean type);
+    
+    public List<RequestStatus> getAllHistory(String id);
 
     public List<RequestStatus> getAll(String key);
 
@@ -25,6 +27,8 @@ public interface RequestStatusControllerInterface {
     public String update(String id, String datetime, String description, String request, String status);
 
     public String insert(String id, String datetime, String description, String request, String status);
+    
+    public String delete(String key);
 }
 
 
