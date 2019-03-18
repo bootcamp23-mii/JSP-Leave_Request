@@ -25,7 +25,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3"> Users Page </div>
+                <div class="sidebar-brand-text mx-3"> Hi <% out.print(session.getAttribute("name"));%></div>
             </a>
 
             <!-- Divider -->
@@ -33,7 +33,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="DashboardAdminServlet">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -43,7 +43,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=delete">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Users</span>
                 </a>
@@ -51,7 +51,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#AddRequest.jsp" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=add_request">
                     <i class="fas fa-fw fa-wrench"></i>
                     <span>Add Resquest</span>
                 </a>
@@ -60,10 +60,17 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=his_req">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>History and Request</span>
                 </a>
+            </li>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=approval">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Approval</span></a>
             </li>
 
         </ul>
@@ -194,7 +201,7 @@
                         </div>
 
                     </form> 
-                    
+
                     <div>
                         <table id="" class=" table table-striped" cellspacing='30' align ='center' border="1">
 
@@ -267,7 +274,7 @@
         <script>
             $("#startdate").datepicker({beforeShowDay: $.datepicker.noWeekends, dateFormat: 'dd-mm-yy'});
             $("#enddate").datepicker({beforeShowDay: $.datepicker.noWeekends, dateFormat: 'dd-mm-yy'});
-            $("#startdate").click(function (){
+            $("#startdate").click(function () {
                 var start = document.getElementById("startdate").value;
                 var end = document.getElementById("enddate").value;
                 var startTanggal = start.split("-")[0];
@@ -276,10 +283,10 @@
                 var endBulan = end.split("-")[1];
                 var startTahun = start.split("-")[2];
                 var endTahun = end.split("-")[2];
-                var totalCuti = (endTanggal-startTanggal+((endBulan - startBulan)*30)+((endTahun - startTahun)*360));
+                var totalCuti = (endTanggal - startTanggal + ((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
                 document.getElementById("total").value = totalCuti.toString();
             });
-            $("#enddate").click(function (){
+            $("#enddate").click(function () {
                 var start = document.getElementById("startdate").value;
                 var end = document.getElementById("enddate").value;
                 var startTanggal = start.split("-")[0];
@@ -288,7 +295,7 @@
                 var endBulan = end.split("-")[1];
                 var startTahun = start.split("-")[2];
                 var endTahun = end.split("-")[2];
-                var totalCuti = (endTanggal-startTanggal+((endBulan - startBulan)*30)+((endTahun - startTahun)*360));
+                var totalCuti = (endTanggal - startTanggal + ((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
                 document.getElementById("total").value = totalCuti.toString();
             });
         </script>

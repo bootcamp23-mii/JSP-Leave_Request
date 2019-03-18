@@ -13,61 +13,63 @@
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-                <!-- Sidebar - Brand -->
-                <a class="sidebar-brand d-flex align-items-center justify-content-center" href="">
-                    <div class="sidebar-brand-icon rotate-n-15">
-                        <i class="fas fa-laugh-wink"></i>
-                    </div>
-                    <div class="sidebar-brand-text mx-3"> Admin Page </div>
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3"> Hi <% out.print(session.getAttribute("name"));%></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="DashboardAdminServlet">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
+            </li>
+
+            <!-- Divider -->
+            <!--                <hr class="sidebar-divider">-->
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=delete">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Users</span>
                 </a>
+            </li>
 
-                <!-- Divider -->
-                <hr class="sidebar-divider my-0">
-
-                <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="DashboardAdmin.jsp">
-                        <i class="fas fa-fw fa-tachometer-alt"></i>
-                        <span>Dashboard</span></a>
-                </li>
+            <!-- Nav Item - Utilities Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=add_request">
+                    <i class="fas fa-fw fa-wrench"></i>
+                    <span>Add Resquest</span>
+                </a>
+            </li>
 
 
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
-                    <a class="nav-link collapsed" href="UsersAdmin.jsp" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                        <i class="fas fa-fw fa-cog"></i>
-                        <span>Users</span>
-                    </a>
-                </li>
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=his_req">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>History and Request</span>
+                </a>
+            </li>
 
-                <!-- Nav Item - Utilities Collapse Menu -->
-                <li class="nav-item active">
-                    <a class="nav-link collapsed" href="AddRequestAdmin.jsp" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                        <i class="fas fa-fw fa-wrench"></i>
-                        <span>Add Resquest</span>
-                    </a>
-                </li>
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="DashboardAdminServlet?action=approval">
+                    <i class="fas fa-fw fa-folder"></i>
+                    <span>Approval</span></a>
+            </li>
 
-     
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
-                    <a class="nav-link collapsed" href="HistoryAdmin.jsp" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-folder"></i>
-                        <span>History and Request</span>
-                    </a>
-                </li>
-
-                <!-- Nav Item - Charts -->
-                <li class="nav-item active">
-                    <a class="nav-link collapsed" href="Approval.jsp" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-folder"></i>
-                        <span>Approval</span></a>
-                </li>
-
-            </ul>
-            <!-- End of Sidebar -->
+        </ul>
+        <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
