@@ -76,6 +76,10 @@ public class DashboardAdminServlet extends HttpServlet {
                 response.sendRedirect("ApprovalServlet");
             } else if(request.getParameter("action").equals("his_req")){
                 response.sendRedirect("HistoryAdminServlet");
+            } else if(request.getParameter("action").equals("logout")){
+                LoginSession.setIdUsername(null);
+                LoginSession.setRoleUsername(null);
+                response.sendRedirect("LoginPageServlet");
             }
         } else {
             processRequest(request, response);

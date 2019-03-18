@@ -16,6 +16,76 @@
         <div class="d-sm-flex align-items-center justify-content-between mb-4">     
             <h1 class="h3 mb-0 text-gray-800">History of User Request</h1>
         </div>
+        <!--show modal form-->
+        <div class="modal fade" id="modalHistoryAdminDelete" tabindex="-1" role="dialog" 
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <form action="HistoryAdminServlet" method="POST">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h3 class="modal-title">History Delete</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body mx-3">
+                            <div class="md-form my-5">
+                                <label data-error="wrong" data-success="true">ID</label>
+                                <input type="text" name="historyAdminDeleteId" id="idDelete-r" class="form-control">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" value="Save" name="save" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--end of show modal form-->
+        <!--show modal form-->
+        <div class="modal fade" id="modalHistoryAdmin" tabindex="-1" role="dialog" 
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <form action="HistoryAdminServlet" method="POST">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header text-center">
+                            <h3 class="modal-title">History Update</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body mx-3">
+                            <div class="md-form my-5">
+                                <label data-error="wrong" data-success="true">ID</label>
+                                <input type="text" name="historyAdminId" id="id-r" class="form-control" value="<% if (session.getAttribute("regionId") != null) {
+                                        out.print(session.getAttribute("regionId"));
+                                    }   %>">
+                            </div>
+                            <div class="md-form my-5">
+                                <label data-error="wrong" data-success="true">DataTime</label>
+                                <input type="text" name="historyAdminDataTime" id="datetime-r" class="form-control">
+                            </div>
+                            <div class="md-form my-5">
+                                <label data-error="wrong" data-success="true">Total</label>
+                                <input type="text" name="historyAdminTotal" id="total-r" class="form-control">
+                            </div>
+                            <div class="md-form my-5">
+                                <label data-error="wrong" data-success="true">Description</label>
+                                <input type="text" name="historyAdminDescription" id="description-r" class="form-control">
+                            </div>
+                            <div class="md-form my-5">
+                                <label data-error="wrong" data-success="true">Employee</label>
+                                <input type="text" name="historyAdminEmployee" id="employee-r" class="form-control">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <input type="submit" value="Save" name="save" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <!--end of show modal form-->
         <form action="HistoryAdminServlet" method="POST">
             <table id="historyAdminTable" class=" table table-striped" cellspacing='30' align ='center' border="1">
                 <thead>
@@ -38,17 +108,10 @@
                         <td><%= elem.getDescription().getDescription()%></td>
                         <td><%= elem.getEmployee().getId()%></td>
                         <td>
-                            <a type="button" class="btn btn-primary" data-target="#modalRegion" href="../HistoryAdminServlet?action=update&id=<%= elem.getId()%>">Edit</a>
-                            <a class="btn btn-danger" href="../HistoryAdminServlet?action=delete&id=<%= elem.getId()%>"><% if (session.getAttribute("id") != null) {
-                                    if (session.getAttribute("id").equals(elem.getId())) {
-                                        out.print("checked");
-                                    } else {
-                                        out.print("Hapus");
-                                    }
-                                } else {
-                                    out.print("Hapus");
-
-                                }%></a>
+         <!--//                    <a type="button" class="btn btn-primary" data-target="#modalRegion" href="../HistoryAdminServlet?action=update&id=<%= elem.getId()%>">Edit</a>-->
+                            <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalHistoryAdmin" 
+                               data-getid="<%= elem.getId()%>" data-datetime="<%= elem.getDatetime()%>" data-total="<%= elem.getTotal()%>" data-description="<%= elem.getDescription().getId()%>" data-employee="<%= elem.getEmployee().getId()%>">Edit</a>
+                            <a class="btn btn-danger" data-toggle="modal" data-target="#modalHistoryAdminDelete" data-getiddelete="<%= elem.getId()%>">Hapus</a>
                         </td>
                     </tr> 
                     <%}%>
@@ -90,9 +153,37 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="LoginPage.jsp">Logout</a>
+                    <a class="btn btn-primary" href="DashboardAdminServlet?action=logout">Logout</a>
                 </div>
             </div>
         </div>
     </div>
+    <!--set modal js-->
+    <script>
+        $('#modalHistoryAdmin').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('getid')
+            var datetime = button.data('datetime')
+            var total = button.data('total')
+            var description = button.data('description')
+            var employee = button.data('employee')
+            var modal = $(this)
+            modal.find('#id-r').val(id)
+            modal.find('#datetime-r').val(datetime)
+            modal.find('#total-r').val(total)
+            modal.find('#description-r').val(description)
+            modal.find('#employee-r').val(employee)
+        })
+    </script>
+    <!--end of set modal js-->
+    <!--set modal js-->
+    <script>
+        $('#modalHistoryAdminDelete').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var id = button.data('getiddelete')
+            var modal = $(this)
+            modal.find('#idDelete-r').val(id)
+        })
+    </script>
+    <!--end of set modal js-->
 </html>
