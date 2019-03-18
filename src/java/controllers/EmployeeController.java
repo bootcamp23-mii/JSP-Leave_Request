@@ -52,6 +52,7 @@ public class EmployeeController implements EmployeeControllerInterface{
         if (!list.isEmpty()) {
             for (Employee employee : list) {
                 LoginSession.setIdUsername(employee.getId());
+                LoginSession.setRoleUsername(employee.getJob().getId());
                 if (BCrypt.checkpw(password, employee.getPassword())) {
                     return true;
                 }
