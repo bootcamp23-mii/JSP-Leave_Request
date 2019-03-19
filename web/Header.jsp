@@ -12,7 +12,9 @@
             boolean isLogin = session.getAttribute("nameLogin") == null;
             if (isLogin) {
                 response.sendRedirect("/LoginPageServlet");
+                out.print("AAA");
             } else {
+                response.sendRedirect("/LoginPageServlet");
                 out.print("Masuk");
             }
         %>
