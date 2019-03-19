@@ -82,8 +82,6 @@ public class Employee implements Serializable {
     private Job job;
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<LeaveHistory> leaveHistoryList;
-    
-    private Blob blob;
 
     public Employee() {
     }

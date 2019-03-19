@@ -30,6 +30,7 @@ import tools.HibernateUtil;
  */
 @WebServlet(name = "AddUserServlet", urlPatterns = {"/AddUserServlet"})
 public class AddUserServlet extends HttpServlet {
+
     EmployeeControllerInterface eci = new EmployeeController(HibernateUtil.getSessionFactory());
     MarriedStatusControllerInterface ms = new MarriedStatusController(HibernateUtil.getSessionFactory());
     JobControllerInterface jc = new JobController(HibernateUtil.getSessionFactory());
@@ -72,9 +73,6 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if(request.getParameter("action").equalsIgnoreCase("delete")){
-            eci.delete(request.getParameter("id"));
-        }
         processRequest(request, response);
     }
 
@@ -89,13 +87,13 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
-        if(request.getParameter("id")==null){
+
+        if (request.getParameter("id") == null) {
             eci.register("", request.getParameter("name"), request.getParameter("gender"), request.getParameter("totaldate"), request.getParameter("email"), request.getParameter("password"), request.getParameter("marriedstatus"), request.getParameter("manager"), request.getParameter("job"), request.getParameter("joindate"));
-        }else{
+        } else {
             eci.register(request.getParameter("id"), request.getParameter("name"), request.getParameter("gender"), request.getParameter("totaldate"), request.getParameter("email"), request.getParameter("password"), request.getParameter("marriedstatus"), request.getParameter("manager"), request.getParameter("job"), request.getParameter("joindate"));
         }
-       
+
         processRequest(request, response);
     }
 

@@ -63,7 +63,7 @@
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="HeaderServlet?action=delete">
                         <i class="fas fa-fw fa-cog"></i>
-                        <span>Users</span>
+                        <span>Users Profile</span>
                     </a>
                 </li>
 
@@ -88,6 +88,12 @@
                     <a class="nav-link collapsed" href="HeaderServlet?action=approval">
                         <i class="fas fa-fw fa-folder"></i>
                         <span>Approval</span></a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link collapsed" href="HeaderServlet?action=add_users">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Add Users</span></a>
                 </li>
             </ul>
             <!-- End of Sidebar -->

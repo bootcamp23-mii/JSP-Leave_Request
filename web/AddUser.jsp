@@ -27,8 +27,10 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content" >
                             <div class="modal-header text-center">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span area-hidden="true">&times;</span></button>
                                 <h3 class="modal-title">Add User</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                             <div class="modal-body mx-3">
                                 <div class="md-form my-5">
@@ -96,7 +98,7 @@
                                             out.print(session.getAttribute("Password"));
                                         }%>">
                                 </div>
-                                
+
                             </div>
                             <div class="modal-footer">
                                 <input class="btn btn-default" type="submit" value="Save" name="save" />
@@ -110,9 +112,11 @@
             <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content" >
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span area-hidden="true">&times;</span></button>
-                            <h3 class="modal-title">USER</h3>
+                        <div class="modal-header text-center">
+                            <h3 class="modal-title">Detail User</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                         </div>
                         <div class="modal-body mx-3">
                             <div class="md-form my-2">
@@ -169,8 +173,10 @@
                     <div class="modal-dialog" role="document">
                         <div class="modal-content" >
                             <div class="modal-header text-center">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span area-hidden="true">&times;</span></button>
                                 <h3 class="modal-title">Edit User</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                             <div class="modal-body mx-3">
                                 <div class="md-form my-2">
@@ -236,7 +242,7 @@
                                             out.print(session.getAttribute("userEmail"));
                                         }%>">
                                 </div>
-                                
+
                             </div>
                             <div class="modal-footer">
                                 <input class="btn btn-default" type="submit" value="Save" name="save" />
@@ -245,21 +251,29 @@
                     </div>
                 </div>
             </form>
-                                
-<!--modal delete-->
+
+            <!--modal delete-->
             <form class="w3-container" action="AddUserServlet?action=delete&id=" method="GET">
                 <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content" >
                             <div class="modal-header text-center">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span area-hidden="true">&times;</span></button>
                                 <h3 class="modal-title">Delete User</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
                             <div class="modal-body mx-3">
                                 <div class="md-form my-5">
-                                    <label data-error="wrong" data-success="true">Are you sure want to delete?</label>
-                                    <input type="text" name="id" id="id-del" class="form-control" readonly>
-                                    <input type="text" name="name" id="name-del" class="form-control" readonly>
+                                    <div class="my-2">
+                                        <label data-error="wrong" data-success="true">Are you sure want to delete?</label>
+                                    </div>
+                                    <div class="my-2">
+                                        <input type="text" name="id" id="id-del" class="form-control" readonly>
+                                    </div>
+                                    <div class="my-2">
+                                        <input type="text" name="name" id="name-del" class="form-control" readonly>
+                                    </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
