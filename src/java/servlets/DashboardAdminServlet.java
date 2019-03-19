@@ -27,7 +27,6 @@ import tools.HibernateUtil;
 public class DashboardAdminServlet extends HttpServlet {
 
 //    String id = LoginSession.getIdUsername();
-    String id = "11201";
     EmployeeControllerInterface eci = new EmployeeController(HibernateUtil.getSessionFactory());
 
     /**
@@ -43,17 +42,21 @@ public class DashboardAdminServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            if (eci.getIdKar(id) != null) {
-                for (Employee employee : eci.getIdKar(id)) {
-                    request.getSession().setAttribute("name", employee.getName());
-                    if (employee.getIdmanager() != null) {
-                        request.getSession().setAttribute("manager", employee.getIdmanager().getName());
-                    } else {
-                        request.getSession().setAttribute("manager", "Ultra Supervisor");
-                    }
-                }
+            if (request.getSession().getAttribute("nameLogin") == null) {
+                response.sendRedirect("LoginPage.jsp");
+            } else {
+                response.sendRedirect("DashboardAdmin.jsp");
             }
-            response.sendRedirect("DashboardAdmin.jsp");
+//            if (eci.getIdKar(id) != null) {
+//                for (Employee employee : eci.getIdKar(id)) {
+//                    request.getSession().setAttribute("name", employee.getName());
+//                    if (employee.getIdmanager() != null) {
+//                        request.getSession().setAttribute("manager", employee.getIdmanager().getName());
+//                    } else {
+//                        request.getSession().setAttribute("manager", "Ultra Supervisor");
+//                    }
+//                }
+//            }
         }
     }
 
@@ -74,9 +77,9 @@ public class DashboardAdminServlet extends HttpServlet {
                 response.sendRedirect("AddRequestServlet");
             } else if (request.getParameter("action").equals("approval")) {
                 response.sendRedirect("ApprovalServlet");
-            } else if(request.getParameter("action").equals("his_req")){
+            } else if (request.getParameter("action").equals("his_req")) {
                 response.sendRedirect("HistoryAdminServlet");
-            } else if(request.getParameter("action").equals("logout")){
+            } else if (request.getParameter("action").equals("logout")) {
                 LoginSession.setIdUsername(null);
                 LoginSession.setRoleUsername(null);
                 request.getSession().setAttribute("idLogin", null);

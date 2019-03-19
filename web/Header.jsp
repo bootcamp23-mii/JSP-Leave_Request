@@ -4,15 +4,24 @@
     Author     : Panji Sadewo
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
+        <%@page contentType="text/html" pageEncoding="UTF-8"%>
+        <%
+            boolean isLogin = session.getAttribute("nameLogin") == null;
+            if (isLogin) {
+                response.sendRedirect("/LoginPageServlet");
+            } else {
+                out.print("Masuk");
+            }
+        %>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
+        <meta http-equiv="refresh" content="1;URL=/Leave_request/LoginPageServlet">
 
         <title>MII Leave Request - Admin</title>
 
@@ -23,11 +32,6 @@
         <script src="//code.jquery.com/jquery-1.12.4.js"></script>
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>
-    <% if (request.getSession().getAttribute("nameLogin") != null) {
-                response.sendRedirect("DashboardAdminServlet");
-            } else {
-                response.sendRedirect("LoginPage.jsp");
-            } %>
     <body id="page-top">
 
         <!-- Page Wrapper -->
@@ -89,7 +93,7 @@
                         <i class="fas fa-fw fa-folder"></i>
                         <span>Approval</span></a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="HeaderServlet?action=add_users">
                         <i class="fas fa-fw fa-folder"></i>

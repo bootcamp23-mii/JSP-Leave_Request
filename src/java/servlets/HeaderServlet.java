@@ -74,9 +74,9 @@ public class HeaderServlet extends HttpServlet {
                 LoginSession.setIdUsername(null);
                 LoginSession.setRoleUsername(null);
                 LoginSession.setNameLogin(null);
-//                request.getSession().removeAttribute("idLogin");
-//                request.getSession().removeAttribute("roleLogin");
-//                request.getSession().removeAttribute("nameLogin");
+                request.getSession().removeAttribute("idLogin");
+                request.getSession().removeAttribute("roleLogin");
+                request.getSession().removeAttribute("nameLogin");
                 HttpSession session = request.getSession(false);
                 session.invalidate();
                 response.sendRedirect("LoginPageServlet");
