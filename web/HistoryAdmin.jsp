@@ -7,8 +7,8 @@
 <%@page import="models.LeaveHistory"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<html>
-    <jsp:include page="Header.jsp" />
+
+<%@include file="Header.jsp"%>
 
         <div class="d-sm-flex align-items-center justify-content-between mb-4">     
             <h1 class="h3 mb-0 text-gray-800">History of User Request</h1>
@@ -107,8 +107,7 @@
                     <td><%= elem.getDescription().getDescription()%></td>
                     <td><%= elem.getEmployee().getId()%></td>
                     <td>
-                        <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalHistoryAdmin" 
-                           data-getid="<%= elem.getId()%>" data-datetime="<%= elem.getDatetime()%>" data-total="<%= elem.getTotal()%>" data-description="<%= elem.getDescription().getId()%>" data-employee="<%= elem.getEmployee().getId()%>">Edit</a>
+                        <a type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalHistoryAdmin" data-getid="<%= elem.getId()%>" data-datetime="<%= elem.getDatetime()%>" data-total="<%= elem.getTotal()%>" data-description="<%= elem.getDescription().getId()%>" data-employee="<%= elem.getEmployee().getId()%>">Edit</a>
                         <a class="btn btn-danger" data-toggle="modal" data-target="#modalHistoryAdminDelete" data-getiddelete="<%= elem.getId()%>">Hapus</a>
                     </td>
                 </tr> 
@@ -125,32 +124,31 @@
 <!--set modal js-->
 <script>
     $('#modalHistoryAdmin').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('getid')
-        var datetime = button.data('datetime')
-        var total = button.data('total')
-        var description = button.data('description')
-        var employee = button.data('employee')
-        var modal = $(this)
-        modal.find('#id-r').val(id)
-        modal.find('#datetime-r').val(datetime)
-        modal.find('#total-r').val(total)
-        modal.find('#description-r').val(description)
-        modal.find('#employee-r').val(employee)
-    })
+        var button = $(event.relatedTarget);
+        var id = button.data('getid');
+        var datetime = button.data('datetime');
+        var total = button.data('total');
+        var description = button.data('description');
+        var employee = button.data('employee');
+        var modal = $(this);
+        modal.find('#id-r').val(id);
+        modal.find('#datetime-r').val(datetime);
+        modal.find('#total-r').val(total);
+        modal.find('#description-r').val(description);
+        modal.find('#employee-r').val(employee);
+    });
 </script>
 </body>
 <!--end of set modal js-->
 <!--set modal js-->
 <script>
     $('#modalHistoryAdminDelete').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var id = button.data('getiddelete')
-        var modal = $(this)
-        modal.find('#idDelete-r').val(id)
-    })
+        var button = $(event.relatedTarget);
+        var id = button.data('getiddelete');
+        var modal = $(this);
+        modal.find('#idDelete-r').val(id);
+    });
 </script>
 <!--end of set modal js-->
 
-<jsp:include page="Footer.jsp" />
-</html>
+<%@include file="Footer.jsp"%>

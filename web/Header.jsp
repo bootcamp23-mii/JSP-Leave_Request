@@ -3,27 +3,16 @@
     Created on : Mar 14, 2019, 3:04:19 PM
     Author     : Panji Sadewo
 --%>
-
+<%@include file="lol.jsp" %>
 <!DOCTYPE html>
 <html>
     <head>
         <%@page contentType="text/html" pageEncoding="UTF-8"%>
-        <%
-            boolean isLogin = session.getAttribute("nameLogin") == null;
-            if (isLogin) {
-                response.sendRedirect("/LoginPageServlet");
-                out.print("AAA");
-            } else {
-                response.sendRedirect("/LoginPageServlet");
-                out.print("Masuk");
-            }
-        %>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
-        <meta http-equiv="refresh" content="1;URL=/Leave_request/LoginPageServlet">
 
         <title>MII Leave Request - Admin</title>
 
@@ -279,3 +268,4 @@
 
                     </nav>
                     <!-- End of Topbar -->
+       

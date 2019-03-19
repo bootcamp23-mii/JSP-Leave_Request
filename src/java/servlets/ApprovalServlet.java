@@ -70,13 +70,6 @@ public class ApprovalServlet extends HttpServlet {
             if (action.equalsIgnoreCase("delete")) {
                 rc.delete(request.getParameter("id"));
             } else if (action.equalsIgnoreCase("update")) {
-                Request r = rc.getById(request.getParameter("id"));
-                request.getSession().setAttribute("id", r.getId());
-                request.getSession().setAttribute("start", r.getStartdate());
-                request.getSession().setAttribute("end", r.getEnddate());
-                request.getSession().setAttribute("total", r.getTotal());
-                request.getSession().setAttribute("leavetype", r.getLeavetype().getType());
-                request.getSession().setAttribute("status", r.getStatus());
             }
         }
         processRequest(request, response);
@@ -93,13 +86,23 @@ public class ApprovalServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//            if (rc.save(request.getParameter("approvalId"), request.getParameter("start"), request.getParameter("end"), request.getParameter("total"), request.getParameter("leavetype"), request.getParameter("employee"),
-//                    request.getParameter("status")) != null) {
-//                processRequest(request, response);
-//            }
-//              if (rsci.insert("a", date, id, id, id)) {
-//            
-//        }
+        System.out.println(request.getParameter("approvalIdID"));
+        System.out.println(request.getParameter("approvalStart"));
+        System.out.println(request.getParameter("approvalEnd"));
+        System.out.println(request.getParameter("approvalTotal"));
+        System.out.println(request.getParameter("approvalStatus"));
+        System.out.println(request.getParameter("approvalEmployee"));
+        System.out.println(request.getParameter("approvalLeave"));
+        
+            if (rc.save(request.getParameter("approvalIdID"), 
+                    request.getParameter("approvalStart"), 
+                    request.getParameter("approvalEnd"), 
+                    request.getParameter("approvalTotal"), 
+                    request.getParameter("approvalStatus"), 
+                    request.getParameter("approvalEmployee"), 
+                    request.getParameter("approvalLeave")) != null) {
+                processRequest(request, response);
+            }
     }
 
     /**

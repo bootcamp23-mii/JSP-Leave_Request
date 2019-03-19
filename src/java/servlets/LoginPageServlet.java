@@ -41,7 +41,12 @@ public class LoginPageServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            response.sendRedirect("LoginPage.jsp");
+            if (request.getSession().getAttribute("idLogin") != null) {
+                response.sendRedirect("DashboardAdmin.jsp");
+            } else if (request.getSession().getAttribute("idLogin") == null) {
+                response.sendRedirect("LoginPage.jsp");
+            }
+//            response.sendRedirect("LoginPage.jsp");
         }
     }
 
@@ -71,6 +76,7 @@ public class LoginPageServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         if (eci.login(request.getParameter("usernameLogin"), request.getParameter("passwordLogin"))) {
             request.getSession().setAttribute("idLogin", LoginSession.getIdUsername());
             request.getSession().setAttribute("roleLogin", LoginSession.getRoleUsername());

@@ -11,7 +11,7 @@
 <%@page import="org.hibernate.SessionFactory"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
-<jsp:include page="Header.jsp" />
+<%@include file="Header.jsp"%>
 <!-- Begin Page Content -->
 <div class="container-fluid">
     <!-- Page Heading -->
@@ -129,4 +129,5 @@
     <i class="fas fa-angle-up"></i>
 </a>
 </body>
-<jsp:include page="Footer.jsp" />
+<%@include file="Footer.jsp"%>
+<%--<jsp:include page="Footer.jsp" />--%>

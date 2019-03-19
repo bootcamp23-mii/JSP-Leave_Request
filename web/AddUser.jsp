@@ -12,7 +12,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-    <jsp:include page="Header.jsp" />
+    <%@include file="Header.jsp"%>
     <body id="page-top">
 
         <!-- Begin Container-->
@@ -486,5 +486,5 @@
     }
 </script>
 </body>
-<jsp:include page="Footer.jsp" />
+<%@include file="Footer.jsp"%>
 </html>
