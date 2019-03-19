@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 17, 2019 at 10:45 AM
+-- Generation Time: Mar 19, 2019 at 07:48 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.6.3
 
@@ -24,22 +24,44 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllDATA`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `raiseLeaveTotal`()
     NO SQL
 BEGIN
-DECLARE idEmp varchar(25);
-DECLARE ltEmp varchar(25);
 DECLARE v_finished INTEGER DEFAULT 0;
 DECLARE v_id varchar(100) DEFAULT "1";
-DECLARE e_data_id CURSOR FOR SELECT ID FROM tb_m_employee;
-DECLARE e_data_lt CURSOR FOR SELECT LEAVETOTAL FROM tb_m_employee;
+DECLARE e_data_id CURSOR FOR SELECT LEAVETOTAL FROM tb_m_employee;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_finished = 1;
 OPEN e_data_id;
 get_Id: LOOP FETCH e_data_id INTO v_id;
 IF v_finished = 1
 THEN LEAVE get_Id;
 END IF;
-UPDATE tb_m_employee SET LEAVETOTAL = '99' where ID = v_id;
+UPDATE tb_m_employee SET LEAVETOTAL = v_id+1 where LEAVETOTAL = v_id and datediff(now(), JOINDATE) < '730';
+UPDATE tb_m_employee SET LEAVETOTAL = v_id+14 where LEAVETOTAL = v_id and datediff(now(), JOINDATE) > '730' and month(now()) = '1';
+END LOOP get_Id;
+CLOSE e_data_id;
+end$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `resetLeaveTotal`()
+    NO SQL
+BEGIN
+DECLARE v_finished INTEGER DEFAULT 0;
+DECLARE v_id varchar(100) DEFAULT "1";
+DECLARE e_data_id CURSOR FOR SELECT LEAVETOTAL FROM tb_m_employee;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET v_finished = 1;
+OPEN e_data_id;
+get_Id: LOOP FETCH e_data_id INTO v_id;
+IF v_finished = 1
+THEN LEAVE get_Id;
+END IF;
+IF v_id > 7
+THEN
+UPDATE tb_m_employee SET LEAVETOTAL = '7' where LEAVETOTAL = v_id and datediff(now(), JOINDATE) < '730' and month(now()) = '7';
+END IF;
+IF v_id > 14
+THEN
+UPDATE tb_m_employee SET LEAVETOTAL = '14' where LEAVETOTAL = v_id and datediff(now(), JOINDATE) > '730' and month(now()) = '1';
+END IF;
 END LOOP get_Id;
 CLOSE e_data_id;
 end$$
@@ -47,25 +69,6 @@ end$$
 --
 -- Functions
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `getdatacuti`(`idemp` VARCHAR(255)) RETURNS varchar(255) CHARSET latin1
-BEGIN
-DECLARE temp bigint(255);
-select LEAVETOTAL into temp from tb_m_employee where ID = idemp;
-RETURN temp;
-END$$
-
-CREATE DEFINER=`root`@`localhost` FUNCTION `nextIdELeaveType`() RETURNS varchar(255) CHARSET latin1
-BEGIN
-DECLARE idBegin varchar(255);
-DECLARE nextId varchar(255);
-DECLARE idCount INT;
-SELECT count(id) INTO idCount FROM tb_m_leave_type;
-SET idCount = idCount + 1;
-SELECT value INTO idBegin FROM tb_m_parameter WHERE id = 'tb_m_leave_type_ID_BEGIN';
-SET nextId = CONCAT(idBegin,idCount);
-RETURN nextId;
-END$$
-
 CREATE DEFINER=`root`@`localhost` FUNCTION `nextIdEmployee`() RETURNS varchar(255) CHARSET latin1
 BEGIN
 DECLARE idBegin varchar(255);
@@ -102,7 +105,19 @@ SET nextId = CONCAT(idBegin,idCount);
 RETURN nextId;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `nextIdLeaveHistory`() RETURNS varchar(255) CHARSET latin1
+CREATE DEFINER=`root`@`localhost` FUNCTION `nextIdLeaveType`() RETURNS varchar(25) CHARSET latin1
+BEGIN
+DECLARE idBegin varchar(255);
+DECLARE nextId varchar(255);
+DECLARE idCount INT;
+SELECT count(id) INTO idCount FROM tb_m_leave_type;
+SET idCount = idCount + 1;
+SELECT value INTO idBegin FROM tb_m_parameter WHERE id = 'tb_m_leave_type_ID_BEGIN';
+SET nextId = CONCAT(idBegin,idCount);
+RETURN nextId;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `nextIdLeave_History`() RETURNS varchar(25) CHARSET latin1
 BEGIN
 DECLARE idBegin varchar(255);
 DECLARE nextId varchar(255);
@@ -138,7 +153,7 @@ SET nextId = CONCAT(idBegin,idCount);
 RETURN nextId;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `nextIdRequestStatus`() RETURNS varchar(255) CHARSET latin1
+CREATE DEFINER=`root`@`localhost` FUNCTION `nextIdRequest_Status`() RETURNS varchar(25) CHARSET latin1
 BEGIN
 DECLARE idBegin varchar(255);
 DECLARE nextId varchar(255);
@@ -162,6 +177,18 @@ SET nextId = CONCAT(idBegin,idCount);
 RETURN nextId;
 END$$
 
+CREATE DEFINER=`root`@`localhost` FUNCTION `nextTb_m_employee`() RETURNS varchar(99) CHARSET latin1
+BEGIN
+DECLARE idBegin varchar(99);
+DECLARE nextId varchar(99);
+DECLARE idCount INT;
+SELECT count(id) INTO idCount FROM tb_m_employee;
+SET idCount = idCount + 1;
+SELECT value INTO idBegin FROM TB_M_PARAMETER WHERE id = 'ID';
+SET nextId = CONCAT(idBegin,idCount);
+RETURN nextId;
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -172,36 +199,37 @@ DELIMITER ;
 
 CREATE TABLE IF NOT EXISTS `tb_m_employee` (
   `ID` varchar(25) NOT NULL DEFAULT '0',
-  `NAME` varchar(255) DEFAULT NULL,
-  `GENDERTYPE` varchar(255) DEFAULT NULL,
-  `LEAVETOTAL` bigint(255) DEFAULT NULL,
-  `EMAIL` varchar(255) DEFAULT NULL,
-  `PASSWORD` varchar(255) DEFAULT NULL,
-  `MARRIEDSTATUS` varchar(255) DEFAULT NULL,
-  `IDMANAGER` varchar(255) DEFAULT NULL,
+  `NAME` varchar(120) DEFAULT NULL,
+  `GENDERTYPE` tinyint(1) DEFAULT NULL,
+  `LEAVETOTAL` bigint(20) DEFAULT NULL,
+  `EMAIL` varchar(100) DEFAULT NULL,
+  `PASSWORD` varchar(100) DEFAULT NULL,
+  `MARRIEDSTATUS` varchar(25) DEFAULT NULL,
+  `IDMANAGER` varchar(25) DEFAULT NULL,
   `PHOTO` blob,
-  `JOB` varchar(255) DEFAULT NULL
+  `JOB` varchar(25) DEFAULT NULL,
+  `JOINDATE` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tb_m_employee`
 --
 
-INSERT INTO `tb_m_employee` (`ID`, `NAME`, `GENDERTYPE`, `LEAVETOTAL`, `EMAIL`, `PASSWORD`, `MARRIEDSTATUS`, `IDMANAGER`, `PHOTO`, `JOB`) VALUES
-('11201', 'Alfa', 'Pria', 99, 'asd@gmail.com', '$2a$10$dwrPe5cP9labjIro0pElBOnNPBV4g9NH09uDtlZdcse6L.nuUqhie', 'SN1', '11201', NULL, 'J1'),
-('11202', 'Beta', 'Wanita', 99, 'beta@mail.com', '22222', 'SN1', '11201', NULL, 'J2'),
-('11203', 'Charlie', 'Pria', 99, 'Charlie@mail.com', '33333', 'SN2', '11201', NULL, 'J2'),
-('11204', 'Delta', 'Wanita', 99, 'delta@mail.com', '44444', 'SN1', '11202', NULL, 'J3'),
-('11205', 'Echo', 'Pria', 99, 'echo@mail.com', '55555', 'SN2', '11203', NULL, 'J3');
+INSERT INTO `tb_m_employee` (`ID`, `NAME`, `GENDERTYPE`, `LEAVETOTAL`, `EMAIL`, `PASSWORD`, `MARRIEDSTATUS`, `IDMANAGER`, `PHOTO`, `JOB`, `JOINDATE`) VALUES
+('11201', 'Alfa', 1, 14, 'asd@gmail.com', '$2a$10$dwrPe5cP9labjIro0pElBOnNPBV4g9NH09uDtlZdcse6L.nuUqhie', 'SN1', '11201', NULL, 'J4', '2014-03-01'),
+('11202', 'Beta', 0, 14, 'beta@mail.com', '$2a$10$dwrPe5cP9labjIro0pElBOnNPBV4g9NH09uDtlZdcse6L.nuUqhie', 'SN1', '11201', NULL, 'J2', '2015-03-01'),
+('11203', 'Charlie', 1, 14, 'Charlie@mail.com', '$2a$10$dwrPe5cP9labjIro0pElBOnNPBV4g9NH09uDtlZdcse6L.nuUqhie', 'SN2', '11201', NULL, 'J2', '2016-03-01'),
+('11204', 'Delta', 0, 7, 'delta@mail.com', '$2a$10$dwrPe5cP9labjIro0pElBOnNPBV4g9NH09uDtlZdcse6L.nuUqhie', 'SN1', '11202', NULL, 'J3', '2018-03-01'),
+('11205', 'Echo', 1, 7, 'echo@mail.com', '$2a$10$dwrPe5cP9labjIro0pElBOnNPBV4g9NH09uDtlZdcse6L.nuUqhie', 'SN2', '11203', NULL, 'J3', '2018-03-01');
 
 --
 -- Triggers `tb_m_employee`
 --
 DELIMITER //
-CREATE TRIGGER `setIdEmployee` BEFORE INSERT ON `tb_m_employee`
+CREATE TRIGGER `setIdemployee` BEFORE INSERT ON `tb_m_employee`
  FOR EACH ROW BEGIN
 DECLARE getId varchar(255);
-SELECT nextIdEmployee() INTO getId;
+SELECT nextIdemployee() INTO getId;
 SET NEW.id = getId;
 END
 //
@@ -214,8 +242,8 @@ DELIMITER ;
 --
 
 CREATE TABLE IF NOT EXISTS `tb_m_job` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
-  `DEPARTMENT` varchar(255) DEFAULT NULL
+  `ID` varchar(25) NOT NULL DEFAULT '',
+  `DEPARTMENT` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -223,9 +251,23 @@ CREATE TABLE IF NOT EXISTS `tb_m_job` (
 --
 
 INSERT INTO `tb_m_job` (`ID`, `DEPARTMENT`) VALUES
-('J1', 'Direktur'),
+('J1', 'Director'),
 ('J2', 'Manager'),
-('J3', 'Developer');
+('J3', 'Developer'),
+('J4', 'Admin');
+
+--
+-- Triggers `tb_m_job`
+--
+DELIMITER //
+CREATE TRIGGER `setIdjob` BEFORE INSERT ON `tb_m_job`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdjob() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -234,8 +276,8 @@ INSERT INTO `tb_m_job` (`ID`, `DEPARTMENT`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tb_m_leave_desc` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
-  `DESCRIPTION` varchar(255) DEFAULT NULL
+  `ID` varchar(25) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -243,10 +285,23 @@ CREATE TABLE IF NOT EXISTS `tb_m_leave_desc` (
 --
 
 INSERT INTO `tb_m_leave_desc` (`ID`, `DESCRIPTION`) VALUES
-('KC1', 'Tambah Perbulan'),
-('KC2', 'Hangus'),
-('KC3', 'Cuti Bersama'),
-('KC4', 'Cuti Biasa');
+('KC1', 'Raise every month'),
+('KC2', 'Charred'),
+('KC3', 'Mass leave'),
+('KC4', 'Ordinary leave');
+
+--
+-- Triggers `tb_m_leave_desc`
+--
+DELIMITER //
+CREATE TRIGGER `setIdLeave_desc` BEFORE INSERT ON `tb_m_leave_desc`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdLeave_desc() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -255,8 +310,8 @@ INSERT INTO `tb_m_leave_desc` (`ID`, `DESCRIPTION`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tb_m_leave_type` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
-  `TYPE` varchar(255) DEFAULT NULL
+  `ID` varchar(25) NOT NULL DEFAULT '',
+  `TYPE` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -264,11 +319,51 @@ CREATE TABLE IF NOT EXISTS `tb_m_leave_type` (
 --
 
 INSERT INTO `tb_m_leave_type` (`ID`, `TYPE`) VALUES
-('JC1', 'Umum'),
-('JC2', 'Orang tua meninggal'),
-('JC3', 'Keluarga meninggal'),
-('JC4', 'Menikah'),
-('JC5', 'Melahirkan');
+('JC1', 'General'),
+('JC2', 'Parent Dead'),
+('JC3', 'Family Dead'),
+('JC4', 'Married'),
+('JC5', 'Give birth');
+
+--
+-- Triggers `tb_m_leave_type`
+--
+DELIMITER //
+CREATE TRIGGER `setIdLeave_type` BEFORE INSERT ON `tb_m_leave_type`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdLeave_type() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_m_libur_nasional`
+--
+
+CREATE TABLE IF NOT EXISTS `tb_m_libur_nasional` (
+  `id` varchar(25) NOT NULL,
+  `date` date NOT NULL,
+  `keteragan` varchar(80) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tb_m_libur_nasional`
+--
+
+INSERT INTO `tb_m_libur_nasional` (`id`, `date`, `keteragan`) VALUES
+('lb1', '2019-05-01', 'Hari Buruh'),
+('lb2', '2019-05-19', 'Hari Raya Waisak'),
+('lb3', '2019-05-30', 'Kenaikan Yesus Kristus'),
+('lb4', '2019-06-01', 'Hari Lahir Pancasila'),
+('lb5', '2019-06-03', 'Cuti Bersama'),
+('lb6', '2019-06-04', 'Cuti Bersama'),
+('lb7', '2019-06-05', 'Idul Fitri'),
+('lb8', '2019-06-06', 'Idul Fitri'),
+('lb9', '2019-06-07', 'Cuti Bersama');
 
 -- --------------------------------------------------------
 
@@ -277,8 +372,8 @@ INSERT INTO `tb_m_leave_type` (`ID`, `TYPE`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tb_m_married_status` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
-  `STATUS` varchar(255) DEFAULT NULL
+  `ID` varchar(25) NOT NULL DEFAULT '',
+  `STATUS` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -286,8 +381,21 @@ CREATE TABLE IF NOT EXISTS `tb_m_married_status` (
 --
 
 INSERT INTO `tb_m_married_status` (`ID`, `STATUS`) VALUES
-('SN1', 'Belum menikah'),
-('SN2', 'Menikah');
+('SN1', 'Not yet married'),
+('SN2', 'Married');
+
+--
+-- Triggers `tb_m_married_status`
+--
+DELIMITER //
+CREATE TRIGGER `setIdMarried_status` BEFORE INSERT ON `tb_m_married_status`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdMarried_status() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -297,8 +405,8 @@ INSERT INTO `tb_m_married_status` (`ID`, `STATUS`) VALUES
 
 CREATE TABLE IF NOT EXISTS `tb_m_parameter` (
   `ID` varchar(255) NOT NULL DEFAULT '',
-  `VALUE` varchar(255) DEFAULT NULL,
-  `DESCRIPTION` varchar(255) DEFAULT NULL
+  `VALUE` varchar(80) DEFAULT NULL,
+  `DESCRIPTION` varchar(80) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -308,7 +416,7 @@ CREATE TABLE IF NOT EXISTS `tb_m_parameter` (
 INSERT INTO `tb_m_parameter` (`ID`, `VALUE`, `DESCRIPTION`) VALUES
 ('JATAH_CUTI_SEBULAN', '1', 'jumlah cuti yang didapat setiap bulan'),
 ('MAX_CUTI', '5', 'maksimal jumlah cuti yang dapat diambil secara berurutan'),
-('tb_m_employee_ID_BEGIN', '1120', 'code awalan dari id'),
+('tb_m_employee_ID_BEGIN', '', 'code awalan dari id'),
 ('tb_m_employee_TABLE_NAME', 'tb_m_employee', 'nama table'),
 ('tb_m_job_ID_BEGIN', 'J', 'code awalan dari id'),
 ('tb_m_job_TABLE_NAME', 'tb_m_job', 'nama table'),
@@ -324,8 +432,8 @@ INSERT INTO `tb_m_parameter` (`ID`, `VALUE`, `DESCRIPTION`) VALUES
 ('tb_m_status_TABLE_NAME', 'tb_m_status', 'nama table'),
 ('tb_t_leave_history_ID_BEGIN', 'RC', 'code awalan dari id'),
 ('tb_t_leave_history_TABLE_NAME', 'tb_t_leave_history', 'nama table'),
-('tb_t_request_tb_m_status_ID_BEGIN', 'SP', 'code awalan dari id'),
-('tb_t_request_tb_m_status_TABLE_NAME', 'tb_t_request_tb_m_status', 'nama table');
+('tb_t_request_status_ID_BEGIN', 'SP', 'code awalan dari id'),
+('tb_t_request_status_TABLE_NAME', 'tb_t_request_status', 'nama table');
 
 -- --------------------------------------------------------
 
@@ -334,13 +442,13 @@ INSERT INTO `tb_m_parameter` (`ID`, `VALUE`, `DESCRIPTION`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tb_m_request` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
+  `ID` varchar(25) NOT NULL DEFAULT '',
   `STARTDATE` date DEFAULT NULL,
   `ENDDATE` date DEFAULT NULL,
-  `TOTAL` bigint(255) DEFAULT NULL,
-  `EMPLOYEE` varchar(255) DEFAULT NULL,
-  `LEAVETYPE` varchar(255) DEFAULT NULL,
-  `STATUS` varchar(255) DEFAULT NULL
+  `TOTAL` bigint(20) DEFAULT NULL,
+  `EMPLOYEE` varchar(25) DEFAULT NULL,
+  `LEAVETYPE` varchar(25) DEFAULT NULL,
+  `STATUS` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -348,8 +456,24 @@ CREATE TABLE IF NOT EXISTS `tb_m_request` (
 --
 
 INSERT INTO `tb_m_request` (`ID`, `STARTDATE`, `ENDDATE`, `TOTAL`, `EMPLOYEE`, `LEAVETYPE`, `STATUS`) VALUES
-('P1', '2019-03-05', '2019-03-20', 15, '11201', 'JC1', 'asdasd'),
-('P2', '2019-02-25', '2019-02-25', 1, '11204', 'JC1', 'DITERIMA');
+('P1', '2019-03-05', '2019-03-20', 15, '11201', 'JC1', 'Tidak dipakai'),
+('P2', '2019-02-25', '2019-02-25', 1, '11205', 'JC1', 'Tidak dipakai'),
+('P3', '0010-09-09', '0012-09-08', 2, '11201', 'JC1', 'Tidak dipakai'),
+('P4', '0034-09-09', '0008-10-09', 4, '11205', 'JC1', 'Tidak dipakai'),
+('P5', '0009-09-09', '0011-09-09', 2, '11201', 'JC1', 'Tidak dipakai');
+
+--
+-- Triggers `tb_m_request`
+--
+DELIMITER //
+CREATE TRIGGER `setIdrequest` BEFORE INSERT ON `tb_m_request`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdrequest() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -358,8 +482,8 @@ INSERT INTO `tb_m_request` (`ID`, `STARTDATE`, `ENDDATE`, `TOTAL`, `EMPLOYEE`, `
 --
 
 CREATE TABLE IF NOT EXISTS `tb_m_status` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
-  `TYPE` varchar(255) DEFAULT NULL
+  `ID` varchar(25) NOT NULL DEFAULT '',
+  `TYPE` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -367,10 +491,23 @@ CREATE TABLE IF NOT EXISTS `tb_m_status` (
 --
 
 INSERT INTO `tb_m_status` (`ID`, `TYPE`) VALUES
-('S1', 'Diproses'),
-('S2', 'Diterima'),
-('S3', 'Ditolak'),
-('S4', 'Dibatalkan');
+('S1', 'Onproses'),
+('S2', 'Accept'),
+('S3', 'Reject'),
+('S4', 'Cancelled');
+
+--
+-- Triggers `tb_m_status`
+--
+DELIMITER //
+CREATE TRIGGER `setIdstatus` BEFORE INSERT ON `tb_m_status`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdstatus() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -379,11 +516,11 @@ INSERT INTO `tb_m_status` (`ID`, `TYPE`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `tb_t_leave_history` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
+  `ID` varchar(25) NOT NULL DEFAULT '',
   `DATETIME` date DEFAULT NULL,
-  `TOTAL` bigint(255) DEFAULT NULL,
-  `DESCRIPTION` varchar(255) DEFAULT NULL,
-  `EMPLOYEE` varchar(255) DEFAULT NULL
+  `TOTAL` bigint(20) DEFAULT NULL,
+  `DESCRIPTION` varchar(25) DEFAULT NULL,
+  `EMPLOYEE` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -391,7 +528,7 @@ CREATE TABLE IF NOT EXISTS `tb_t_leave_history` (
 --
 
 INSERT INTO `tb_t_leave_history` (`ID`, `DATETIME`, `TOTAL`, `DESCRIPTION`, `EMPLOYEE`) VALUES
-('RC1', '2018-07-01', 1, 'KC2', '11201'),
+('RC1', '2018-07-01', 2, 'KC2', '11201'),
 ('RC10', '2018-08-01', 1, 'KC1', '11203'),
 ('RC11', '2018-08-01', 1, 'KC1', '11204'),
 ('RC12', '2018-09-01', 1, 'KC1', '11201'),
@@ -429,11 +566,22 @@ INSERT INTO `tb_t_leave_history` (`ID`, `DATETIME`, `TOTAL`, `DESCRIPTION`, `EMP
 ('RC41', '2019-02-01', 1, 'KC1', '11203'),
 ('RC42', '2019-02-01', 1, 'KC1', '11204'),
 ('RC43', '2019-02-01', 1, 'KC1', '11205'),
+('RC44', '2019-03-16', 2, 'KC4', '11201'),
 ('RC5', '2018-07-01', 1, 'KC1', '11202'),
-('RC6', '2018-07-01', 1, 'KC1', '11203'),
-('RC7', '2018-07-01', 1, 'KC1', '11204'),
-('RC8', '2018-08-01', 1, 'KC1', '11201'),
-('RC9', '2018-08-01', 1, 'KC1', '11202');
+('RC6', '2018-07-01', 1, 'KC1', '11203');
+
+--
+-- Triggers `tb_t_leave_history`
+--
+DELIMITER //
+CREATE TRIGGER `setIdleave_history` BEFORE INSERT ON `tb_t_leave_history`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdleave_history() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -442,11 +590,11 @@ INSERT INTO `tb_t_leave_history` (`ID`, `DATETIME`, `TOTAL`, `DESCRIPTION`, `EMP
 --
 
 CREATE TABLE IF NOT EXISTS `tb_t_request_status` (
-  `ID` varchar(255) NOT NULL DEFAULT '',
+  `ID` varchar(25) NOT NULL DEFAULT '',
   `DATETIME` date DEFAULT NULL,
-  `DESCRIPTION` varchar(255) DEFAULT NULL,
-  `REQUEST` varchar(255) DEFAULT NULL,
-  `STATUS` varchar(255) DEFAULT NULL
+  `DESCRIPTION` varchar(80) DEFAULT NULL,
+  `REQUEST` varchar(25) DEFAULT NULL,
+  `STATUS` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -456,7 +604,24 @@ CREATE TABLE IF NOT EXISTS `tb_t_request_status` (
 INSERT INTO `tb_t_request_status` (`ID`, `DATETIME`, `DESCRIPTION`, `REQUEST`, `STATUS`) VALUES
 ('SP1', '2019-02-14', '', 'P1', 'S1'),
 ('SP2', '2019-02-15', 'Kantor sedang sibuk', 'P1', 'S3'),
-('SP3', '2019-02-14', '', 'P2', 'S1');
+('SP3', '2019-02-14', '', 'P2', 'S1'),
+('SP4', '2019-03-17', '', 'P2', 'S1'),
+('SP5', '2019-03-18', '', 'P3', 'S1'),
+('SP6', '2019-03-18', '', 'P4', 'S1'),
+('SP7', '2019-03-18', '', 'P5', 'S1');
+
+--
+-- Triggers `tb_t_request_status`
+--
+DELIMITER //
+CREATE TRIGGER `setIdrequest_status` BEFORE INSERT ON `tb_t_request_status`
+ FOR EACH ROW BEGIN
+DECLARE getId varchar(255);
+SELECT nextIdrequest_status() INTO getId;
+SET NEW.id = getId;
+END
+//
+DELIMITER ;
 
 --
 -- Indexes for dumped tables
@@ -485,6 +650,12 @@ ALTER TABLE `tb_m_leave_desc`
 --
 ALTER TABLE `tb_m_leave_type`
  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `tb_m_libur_nasional`
+--
+ALTER TABLE `tb_m_libur_nasional`
+ ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tb_m_married_status`
@@ -554,6 +725,16 @@ ADD CONSTRAINT `tb_t_leave_history_ibfk_2` FOREIGN KEY (`EMPLOYEE`) REFERENCES `
 ALTER TABLE `tb_t_request_status`
 ADD CONSTRAINT `tb_t_request_status_ibfk_1` FOREIGN KEY (`REQUEST`) REFERENCES `tb_m_request` (`ID`),
 ADD CONSTRAINT `tb_t_request_status_ibfk_2` FOREIGN KEY (`STATUS`) REFERENCES `tb_m_status` (`ID`);
+
+DELIMITER $$
+--
+-- Events
+--
+CREATE DEFINER=`root`@`localhost` EVENT `resetLeaveTotalPermanent` ON SCHEDULE EVERY 1 MONTH STARTS '2019-01-01 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL resetLeaveTotal()$$
+
+CREATE DEFINER=`root`@`localhost` EVENT `raiseLeaveTotal` ON SCHEDULE EVERY 1 MONTH STARTS '2019-01-01 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO CALL raiseLeaveTotal()$$
+
+DELIMITER ;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
