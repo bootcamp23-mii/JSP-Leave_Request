@@ -41,11 +41,7 @@ public class LoginPageServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            if (request.getSession().getAttribute("idLogin") != null) {
-                response.sendRedirect("DashboardAdminServlet");
-            } else {
-                response.sendRedirect("LoginPage.jsp");
-            }
+            response.sendRedirect("LoginPage.jsp");
         }
     }
 

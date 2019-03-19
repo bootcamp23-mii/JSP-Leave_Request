@@ -23,6 +23,11 @@
         <script src="//code.jquery.com/jquery-1.12.4.js"></script>
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     </head>
+    <% if (request.getSession().getAttribute("nameLogin") != null) {
+                response.sendRedirect("DashboardAdminServlet");
+            } else {
+                response.sendRedirect("LoginPage.jsp");
+            } %>
     <body id="page-top">
 
         <!-- Page Wrapper -->

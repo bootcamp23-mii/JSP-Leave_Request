@@ -64,7 +64,6 @@ public class HistoryAdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = LoginSession.getIdUsername();
         String action = request.getParameter("action");
         if (action != null) {
             if (action.equalsIgnoreCase("delete")) {
