@@ -12,6 +12,8 @@ package models;
 public class LoginSession {
     private static String idUsername;
     private static String roleUsername;
+    private static String nameLogin;
+
 
     public LoginSession() {
     }
@@ -32,4 +34,11 @@ public class LoginSession {
         LoginSession.roleUsername = roleUsername;
     }
 
+    public static String getNameLogin() {
+        return nameLogin;
+    }
+
+    public static void setNameLogin(String nameLogin) {
+        LoginSession.nameLogin = nameLogin;
+    }
 }

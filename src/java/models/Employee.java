@@ -7,6 +7,7 @@ package models;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.sql.Blob;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -81,6 +82,8 @@ public class Employee implements Serializable {
     private Job job;
     @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
     private List<LeaveHistory> leaveHistoryList;
+    
+    private Blob blob;
 
     public Employee() {
     }
@@ -95,6 +98,20 @@ public class Employee implements Serializable {
         this.marriedstatus = marriedstatus;
         this.idmanager = idmanager;
         this.job = job;
+        this.joindate = Joindate;
+    }
+    
+    public Employee(String id, String name, boolean gendertype, BigInteger leavetotal, String email, String password, MarriedStatus marriedstatus, Employee idmanager, Job job, Blob photo, Date Joindate) {
+        this.id = id;
+        this.name = name;
+        this.gendertype = gendertype;
+        this.leavetotal = leavetotal;
+        this.email = email;
+        this.password = password;
+        this.marriedstatus = marriedstatus;
+        this.idmanager = idmanager;
+        this.job = job;
+        this.blob = photo;
         this.joindate = Joindate;
     }
 

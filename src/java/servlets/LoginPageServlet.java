@@ -41,7 +41,11 @@ public class LoginPageServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            response.sendRedirect("LoginPage.jsp");
+            if (request.getSession().getAttribute("idLogin") != null) {
+                response.sendRedirect("DashboardAdminServlet");
+            } else {
+                response.sendRedirect("LoginPage.jsp");
+            }
         }
     }
 
@@ -74,12 +78,13 @@ public class LoginPageServlet extends HttpServlet {
         if (eci.login(request.getParameter("usernameLogin"), request.getParameter("passwordLogin"))) {
             request.getSession().setAttribute("idLogin", LoginSession.getIdUsername());
             request.getSession().setAttribute("roleLogin", LoginSession.getRoleUsername());
+            request.getSession().setAttribute("nameLogin", LoginSession.getNameLogin());
             if (request.getSession().getAttribute("roleLogin").equals("J4")) {
                 response.sendRedirect("DashboardAdminServlet");
             } else if (request.getSession().getAttribute("roleLogin").equals("J2")) {
-                response.sendRedirect("HistoryAdminServlet");
+                response.sendRedirect("DashboardAdminServlet");
             } else if (request.getSession().getAttribute("roleLogin").equals("J3")) {
-                response.sendRedirect("HistoryUserServlet");
+                response.sendRedirect("DashboardAdminServlet");
             }
         } else {
             processRequest(request, response);

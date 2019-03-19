@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import models.LoginSession;
 
 /**
@@ -59,6 +60,7 @@ public class HeaderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         if (request.getParameter("action") != null) {
             if (request.getParameter("action").equals("add_request")) {
                 response.sendRedirect("AddRequestServlet");
@@ -69,8 +71,12 @@ public class HeaderServlet extends HttpServlet {
             } else if (request.getParameter("action").equals("logout")) {
                 LoginSession.setIdUsername(null);
                 LoginSession.setRoleUsername(null);
-                request.getSession().setAttribute("idLogin", null);
-                request.getSession().setAttribute("roleLogin", null);
+                LoginSession.setNameLogin(null);
+//                request.getSession().removeAttribute("idLogin");
+//                request.getSession().removeAttribute("roleLogin");
+//                request.getSession().removeAttribute("nameLogin");
+                HttpSession session = request.getSession(false);
+                session.invalidate();
                 response.sendRedirect("LoginPageServlet");
             }
         } else {
