@@ -258,7 +258,7 @@
             </form>
 
             <!--modal delete-->
-            <form class="w3-container" action="AddUserServlet?action=delete&id=" method="GET">
+            <form class="w3-container" action="AddUserServlet?action=delete" method="POST">
                 <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content" >
@@ -274,10 +274,10 @@
                                         <label data-error="wrong" data-success="true">Are you sure want to delete?</label>
                                     </div>
                                     <div class="my-2">
-                                        <input type="text" name="id" id="id-del" class="form-control" readonly>
+                                        <input type="text" name="iddelete" id="id-del" class="form-control" readonly>
                                     </div>
                                     <div class="my-2">
-                                        <input type="text" name="name" id="name-del" class="form-control" readonly>
+                                        <input type="text" name="namedelete" id="name-del" class="form-control" readonly>
                                     </div>
                                 </div>
                             </div>

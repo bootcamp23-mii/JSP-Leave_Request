@@ -87,13 +87,18 @@ public class AddUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        if (request.getParameter("id") == null) {
+        if(request.getParameter("name")== null){
+                eci.delete(request.getParameter("iddelete"));
+        }else{
+            if (request.getParameter("id") == null) {
             eci.register("", request.getParameter("name"), request.getParameter("gender"), request.getParameter("totaldate"), request.getParameter("email"), request.getParameter("password"), request.getParameter("marriedstatus"), request.getParameter("manager"), request.getParameter("job"), request.getParameter("joindate"));
         } else {
             eci.register(request.getParameter("id"), request.getParameter("name"), request.getParameter("gender"), request.getParameter("totaldate"), request.getParameter("email"), request.getParameter("password"), request.getParameter("marriedstatus"), request.getParameter("manager"), request.getParameter("job"), request.getParameter("joindate"));
         }
+           
+        }
 
+        
         processRequest(request, response);
     }
 
