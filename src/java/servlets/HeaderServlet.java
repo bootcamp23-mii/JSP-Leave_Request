@@ -5,15 +5,21 @@
  */
 package servlets;
 
+import controllers.EmployeeController;
+import controllers.EmployeeControllerInterface;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import models.Employee;
 import models.LoginSession;
+import org.hibernate.Hibernate;
+import tools.HibernateUtil;
 
 /**
  *
@@ -21,6 +27,8 @@ import models.LoginSession;
  */
 @WebServlet(name = "HeaderServlet", urlPatterns = {"/HeaderServlet"})
 public class HeaderServlet extends HttpServlet {
+    
+    EmployeeControllerInterface eci = new EmployeeController(HibernateUtil.getSessionFactory());
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -81,7 +89,21 @@ public class HeaderServlet extends HttpServlet {
                 session.invalidate();
                 response.sendRedirect("LoginPageServlet");
             } else if (request.getParameter("id") != null) {
-                
+                Employee employee = eci.getById(request.getParameter("id").toString());
+                if (employee.getPassword().equals(URLDecoder.decode(request.getParameter("token").toString()))) {
+                    Employee employees = eci.getById(request.getParameter("id"));
+                    eci.update(employees.getId().toString(), 
+                            employees.getName().toString(), 
+                            employees.getGendertype().toString(), 
+                            employees.getLeavetotal().toString(), 
+                            employees.getEmail().toString(), 
+                            employees.getPassword().toString(), 
+                            employees.getMarriedstatus().toString(), 
+                            employees.getIdmanager().toString(), 
+                            employees.getJob().toString(), 
+                            employees.getJoindate().toString());
+                    response.sendRedirect("LoginPageServlet");
+                }
             }
         } else {
             processRequest(request, response);

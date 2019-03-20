@@ -136,7 +136,7 @@ public class EmployeeController implements EmployeeControllerInterface {
     }
 
     @Override
-    public String update(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs, String Date, String JoinDate) {
+    public String update(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs, String JoinDate) {
         String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
         try {
             if (edao.saveOrDelete(new Employee(id, nama, new Boolean(jenisKelamin), new BigInteger(jumlahCuti), email, passwordHash, new MarriedStatus(statusNikah), new Employee(idManager), new Job(jobs), sdf.parse(JoinDate)), true)) {

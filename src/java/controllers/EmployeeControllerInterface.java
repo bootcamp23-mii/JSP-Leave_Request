@@ -34,7 +34,7 @@ public interface EmployeeControllerInterface {
 
     public String delete(String key);
 
-    public String update(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs, String Date, String JoinDate);
+    public String update(String id, String nama, String jenisKelamin, String jumlahCuti, String email, String password, String statusNikah, String idManager, String jobs, String JoinDate);
 
     public String literallyUpdate(String id, String jumlahCuti);
 
