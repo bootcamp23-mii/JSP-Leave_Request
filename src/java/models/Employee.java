@@ -49,7 +49,7 @@ public class Employee implements Serializable {
     @Lob
     @Column(name = "PHOTO")
     private byte[] photo;
-    @Basic(optional = false)
+    @Basic(optional = true)
     @Column(name = "JOINDATE")
     @Temporal(TemporalType.DATE)
     private Date joindate;
