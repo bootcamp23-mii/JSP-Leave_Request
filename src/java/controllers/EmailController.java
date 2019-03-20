@@ -19,7 +19,7 @@ import models.SendEmailTemp;
  *
  * @author Panji Sadewo
  */
-public class EmailController implements EmailInterface{
+public class EmailController implements EmailInterface {
 
     @Override
     public void sendEmail() {
@@ -38,9 +38,12 @@ public class EmailController implements EmailInterface{
             InternetAddress toAddress = new InternetAddress(SendEmailTemp.getToEmail());
             Message message = new MimeMessage(session);
             message.setFrom(fromAddress);
+            message.addHeader("Content-type", "text/html; charset=UTF-8");
             message.setRecipient(Message.RecipientType.TO, toAddress);
             message.setSubject(SendEmailTemp.getSubject());
-            message.setText(SendEmailTemp.getMessage());
+// ini untuk langsung ada link
+//            message.setText(SendEmailTemp.getMessage());
+            message.setContent(SendEmailTemp.getMessage(), "text/html");
             Transport.send(message, SendEmailTemp.getFromEmail(), SendEmailTemp.getPassword());
         } catch (MessagingException ex) {
             ex.printStackTrace();
@@ -49,7 +52,7 @@ public class EmailController implements EmailInterface{
 
     @Override
     public void getDataToEmail() {
-        
+
     }
-    
+
 }

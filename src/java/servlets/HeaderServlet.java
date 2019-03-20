@@ -80,6 +80,8 @@ public class HeaderServlet extends HttpServlet {
                 HttpSession session = request.getSession(false);
                 session.invalidate();
                 response.sendRedirect("LoginPageServlet");
+            } else if (request.getParameter("id") != null) {
+                
             }
         } else {
             processRequest(request, response);

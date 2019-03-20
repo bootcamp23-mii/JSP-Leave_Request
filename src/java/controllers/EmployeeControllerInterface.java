@@ -38,6 +38,6 @@ public interface EmployeeControllerInterface {
 
     public String literallyUpdate(String id, String jumlahCuti);
 
-    
+    public Employee getLastId();
 
 }

@@ -15,6 +15,7 @@ import daos.GeneralDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import models.Employee;
 import models.Request;
 import models.RequestStatus;
 import org.hibernate.SessionFactory;
@@ -51,13 +52,16 @@ public class testTools {
 //            System.out.println("Login gagal");
 //
 //        }
-System.out.println(rci.getAllHistory("11201"));
-        for (RequestStatus request : rci.getAllHistory("11201")) {
-            System.out.println(request.getId());
-            System.out.println(request.getRequest().getId());
-            System.out.println(request.getStatus().getType());
-            System.out.println(request.getRequest().getTotal());
-        }
+//System.out.println(rci.getAllHistory("11201"));
+//        for (RequestStatus request : rci.getAllHistory("11201")) {
+//            System.out.println(request.getId());
+//            System.out.println(request.getRequest().getId());
+//            System.out.println(request.getStatus().getType());
+//            System.out.println(request.getRequest().getTotal());
+//        }
+
+//        Employee e = eci.getLastId();
+//        System.out.println(e.getId());
 
     }
 

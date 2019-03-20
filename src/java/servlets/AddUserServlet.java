@@ -5,6 +5,8 @@
  */
 package servlets;
 
+import controllers.EmailController;
+import controllers.EmailInterface;
 import controllers.EmployeeController;
 import controllers.EmployeeControllerInterface;
 import controllers.JobController;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import models.Employee;
 import models.Job;
 import models.MarriedStatus;
+import models.SendEmailTemp;
 import tools.HibernateUtil;
 
 /**
@@ -34,6 +37,7 @@ public class AddUserServlet extends HttpServlet {
     EmployeeControllerInterface eci = new EmployeeController(HibernateUtil.getSessionFactory());
     MarriedStatusControllerInterface ms = new MarriedStatusController(HibernateUtil.getSessionFactory());
     JobControllerInterface jc = new JobController(HibernateUtil.getSessionFactory());
+    EmailInterface ei = new EmailController();
     List<Employee> LEm = null;
     List<MarriedStatus> LMs = null;
     List<Job> LJob = null;
@@ -90,6 +94,11 @@ public class AddUserServlet extends HttpServlet {
 
         if (request.getParameter("id") == null) {
             eci.register("", request.getParameter("name"), request.getParameter("gender"), request.getParameter("totaldate"), request.getParameter("email"), request.getParameter("password"), request.getParameter("marriedstatus"), request.getParameter("manager"), request.getParameter("job"), request.getParameter("joindate"));
+            SendEmailTemp.setFromEmail("lgg121770@gmail.com");
+            SendEmailTemp.setPassword("123Q123Q@");
+            SendEmailTemp.setToEmail(request.getParameter("email"));
+            SendEmailTemp.setSubject("Link Activation Users "+request.getParameter("name"));
+            ei.sendEmail();
         } else {
             eci.register(request.getParameter("id"), request.getParameter("name"), request.getParameter("gender"), request.getParameter("totaldate"), request.getParameter("email"), request.getParameter("password"), request.getParameter("marriedstatus"), request.getParameter("manager"), request.getParameter("job"), request.getParameter("joindate"));
         }
@@ -105,6 +114,6 @@ public class AddUserServlet extends HttpServlet {
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }
