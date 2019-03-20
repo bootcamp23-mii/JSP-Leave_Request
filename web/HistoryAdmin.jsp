@@ -4,44 +4,63 @@
     Author     : acer
 --%>
 
+<%@page import="models.Request"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="models.LeaveHistory"%>
-<%@page import="models.Request"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@include file="Header.jsp"%>
 
-<div class="d-sm-flex align-items-center justify-content-between mb-4">     
-    <h1 class="h3 mb-0 text-gray-800">History of User Request</h1>
-</div>
-
-<!--show modal form-->
-<div class="modal fade" id="modalHistoryAdminDelete" tabindex="-1" role="dialog" 
-     aria-labelledby="myModalLabel" aria-hidden="true">
-    <form action="HistoryAdminServlet" method="POST">
+<form action="HistoryAdminServlet" method="POST">
+    <div class="modal fade" id="modalHistory" tabindex="-1" role="dialog" 
+         aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h3 class="modal-title">History Delete</h3>
+                <div class="modal-header text-center">   
+                    <h3 class="modal-title">Edit Request</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <!--modal action-->
                 <div class="modal-body mx-3">
-                    <div class="md-form my-5">
+                    <div class="modal-body mx-5">
                         <label data-error="wrong" data-success="true">ID</label>
-                        <input type="text" name="historyAdminDeleteId" id="idDelete-r" class="form-control">
+                        <input type="text" id="h-id" name="id" class="form-control form-control-user"/>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" value="Save" name="save" />
-                </div>
+                    <div class="modal-body mx-5">
+                        <label data-error="wrong" data-success="true">Start Leave</label>
+                        <input type="text" id="h-startdate" name="startdate" class="form-control form-control-user"/>
+                    </div>
+                    <div class="modal-body mx-5">
+                        <label data-error="wrong" data-success="true">End Leave</label>
+                        <input type="text" id="h-enddate" name="enddate" class="form-control form-control-user"/>
+                    </div>
+                    <div class="modal-body mx-5">
+                        <label data-error="wrong" data-success="true">Total</label>
+                        <input type="text" id="h-total" name="total" class="form-control form-control-user" />
+                    </div>
+                    <div class="modal-body mx-5">
+                        <label data-error="wrong" data-success="true">Leave Type</label>
+                        <input type="text" id="h-leavetype" name="status" class="form-control form-control-user" />
+                    </div>  
+                    <div class="modal-body mx-5">
+                        <label data-error="wrong" data-success="true">Employee</label>
+                        <input type="text" id="h-employee" name="status" class="form-control form-control-user" />
+                    </div>  
+                    <div class="modal-body mx-5">
+                        <label data-error="wrong" data-success="true">Status</label>
+                        <input type="text" id="h-status" name="status" class="form-control form-control-user" />
+                    </div> 
+                    <div class="modal-body mx-5">
+                        <input class="btn btn-primary btn-user" type="submit" value="Save" name="save" />
+                    </div>
+                </div>     
             </div>
         </div>
-    </form>
-</div>
-<!--end of show modal form-->
+    </div>
+</form>
 
 <!--modal Detail-->
 <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" 
@@ -91,65 +110,59 @@
     </div>
 </div>
 
-<!--show modal form-->
-<div class="modal fade" id="modalHistoryAdmin" tabindex="-1" role="dialog" 
-     aria-labelledby="myModalLabel" aria-hidden="true">
-    <form action="HistoryAdminServlet" method="POST">
+<!--modal delete-->
+<form action="HistoryAdminServlet" method="POST">
+    <div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" 
+         aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header text-center">
-                    <h3 class="modal-title">History Update</h3>
+                <div class="modal-header text-center">   
+                    <h3 class="modal-title">Delete</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body mx-3">
                     <div class="md-form my-5">
-                        <label data-error="wrong" data-success="true">ID</label>
-                        <input type="text" name="historyAdminId" id="id-r" class="form-control" value="<% if (session.getAttribute("regionId") != null) {
-                                out.print(session.getAttribute("regionId"));
-                            }   %>">
-                    </div>
-                    <div class="md-form my-5">
-                        <label data-error="wrong" data-success="true">DataTime</label>
-                        <input type="text" name="historyAdminDataTime" id="datetime-r" class="form-control">
-                    </div>
-                    <div class="md-form my-5">
-                        <label data-error="wrong" data-success="true">Total</label>
-                        <input type="text" name="historyAdminTotal" id="total-r" class="form-control">
-                    </div>
-                    <div class="md-form my-5">
-                        <label data-error="wrong" data-success="true">Description</label>
-                        <input type="text" name="historyAdminDescription" id="description-r" class="form-control">
-                    </div>
-                    <div class="md-form my-5">
-                        <label data-error="wrong" data-success="true">Employee</label>
-                        <input type="text" name="historyAdminEmployee" id="employee-r" class="form-control">
+                        <div class="my-2">
+                            <label data-error="wrong" data-success="true">Are you sure want to delete?</label>
+                        </div>
+                        <div class="my-2">
+                            <input type="text" name="idDelete-r" id="idDelete-r" class="form-control" readonly>
+                        </div>
+                        <div class="my-2">
+                            <input type="text" name="employee" id="employee-r" class="form-control" readonly>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <input type="submit" value="Save" name="save" />
+                    <input class="btn btn-default" type="submit" value="Delete" name="Delete" />
                 </div>
-            </div>
+            </div>     
         </div>
-    </form>
-</div>
-<!--end of show modal form-->
+    </div>
+</form>
 
-<table id="historyAdminTable" class=" table table-striped" cellspacing='30' align ='center' border="1">
-    <thead>
-        <tr>
-            <th>No</th> 
-            <th>DateTime</th>
-            <th>Total</th>
-            <th>Description</th>
-            <th>Employee</th>
-            <th>Action</th>
-            <th>Details</th>
-        </tr>
-    </thead>
-    <tbody>
-       <%int j = 1;
+
+<div class="d-sm-flex align-items-center justify-content-between mb-4">     
+    <h1 class="h3 mb-0 text-gray-800">History of Your Request</h1>
+</div>
+
+<div>
+    <table id="historyTable" class=" table table-striped" cellspacing='30' align ='center' border="1">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Details<th>
+<!--                <th>Action<th>-->
+            </tr>
+        </thead>
+        <tbody>
+            <%int j = 1;
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 for (Request elem : (List<Request>) session.getAttribute("Request")) {%>
             <tr>
@@ -171,16 +184,11 @@
                 </td>
             </tr>
             <%}%>
-    </tbody>
-</table>
-<!-- End Container-->
+        </tbody>
+    </table>
 </div>
-<!-- End of Content Wrapper -->
 
-</div>
-<!-- End of Page Wrapper -->
 
-<!--set modal js-->
 <script>
     $('#modalHistory').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
@@ -229,7 +237,7 @@
         modal.find('#employeeDelete-r').val(employee);
     });
 </script>
-</body>
 
+<!--end of set modal js-->
 
 <%@include file="Footer.jsp"%>
