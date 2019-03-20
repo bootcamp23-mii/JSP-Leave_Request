@@ -83,7 +83,7 @@
                 </div>
                 <div>
                     <form action="HistoryUserServlet" method="POST">
-                        <table id="historyTable" class=" table table-striped" cellspacing='30' align ='center' border="1">
+                        <table id="ApprovalTable" class=" table table-striped" cellspacing='30' align ='center' border="1">
                             <thead>
                                 <tr>
                                     <th>No</th>

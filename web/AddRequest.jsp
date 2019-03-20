@@ -61,7 +61,7 @@
         </div>
     </form>
 
-    <table id="" class=" table table-striped" cellspacing='30' align ='center' border="1">
+    <table id="AddTable" class=" table table-striped" cellspacing='30' align ='center' border="1">
 
         <thead>
             <tr>

@@ -101,10 +101,7 @@
                 <div class="modal-body mx-5">
                     <label data-error="wrong" data-success="true">Status</label>
                     <input type="text" id="status-r" disabled="true" name="status" class="form-control form-control-user" />
-                </div> 
-                <!--                <div class="modal-body mx-5">
-                                    <input class="btn btn-primary btn-user" type="submit" value="Save" name="save" />
-                                </div>-->
+                </div>             
             </div>     
         </div>
     </div>
@@ -117,7 +114,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">   
-                    <h3 class="modal-title">Delete</h3>
+                    <h3 class="modal-title">Delete Request</h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -131,7 +128,7 @@
                             <input type="text" name="idDelete-r" id="idDelete-r" class="form-control" readonly>
                         </div>
                         <div class="my-2">
-                            <input type="text" name="employee" id="employee-r" class="form-control" readonly>
+                            <input type="text" name="employee" id="employeeDelete-r" class="form-control" readonly>
                         </div>
                     </div>
                 </div>
@@ -157,8 +154,8 @@
                 <th>End</th>
                 <th>Total</th>
                 <th>Status</th>
-                <th>Details<th>
-<!--                <th>Action<th>-->
+                <th>Details</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>

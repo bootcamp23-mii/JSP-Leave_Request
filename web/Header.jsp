@@ -22,6 +22,25 @@
         <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
         <script src="//code.jquery.com/jquery-1.12.4.js"></script>
         <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="http://boot.mobilelegendadddiamond.web.id/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="http://boot.mobilelegendadddiamond.web.id/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="http://boot.mobilelegendadddiamond.web.id/js/sb-admin-2.min.js"></script>
+        <script src="http://boot.mobilelegendadddiamond.web.id/vendor/chart.js/Chart.min.js"></script>
+        <script src="http://boot.mobilelegendadddiamond.web.id/js/demo/chart-area-demo.js"></script>
+        <script src="http://boot.mobilelegendadddiamond.web.id/js/demo/chart-pie-demo.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        
+        <script>
+            $(document).ready(function () {
+                $('#AddTable').DataTable();
+                $('#historyTable').DataTable();
+                $('#ApprovalTable').DataTable();
+            });
+        </script>
+
     </head>
     <body id="page-top">
 

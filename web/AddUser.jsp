@@ -526,6 +526,7 @@
             var filePath = $('#exampleInputFile').val();
         });
     }
+    </i
 </script>
 </body>
 <%@include file="Footer.jsp"%>
