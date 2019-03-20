@@ -131,4 +131,4 @@
     <i class="fas fa-angle-up"></i>
 </a>
 </body>
-<%@include file="Footer.js"%>
+<%@include file="Footer.jsp"%>
