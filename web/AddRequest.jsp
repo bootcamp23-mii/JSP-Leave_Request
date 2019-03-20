@@ -4,6 +4,7 @@
     Author     : acer
 --%>
 
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.time.Duration"%>
 <%@page import="models.RequestStatus"%>
 <%@page import="models.LoginSession"%>
@@ -13,88 +14,81 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@include file="Header.jsp"%>
+<body>
 <!-- Content Wrapper -->
-<div id="content-wrapper" class="d-flex flex-column">
-
-    <!-- Main Content -->
-    <div id="content">
-
-        <!-- Begin Container-->
-        <div class="container-fluid">
-            <div class="d-sm-flex align-items-center justify-content-between mb-4">     
-                <h1 class="h3 mb-0 text-gray-800">Add Request</h1>
-            </div>
-            <form action="AddRequestServlet" method="POST">
-                <table cellspacing='50' align ='center' border="2">
-                    <tbody>
-                        <tr>
-                            <td>Start Leave</td>
-                            <td><input type="text" id="startdate" name="startdate"/></td>
-                        </tr>
-                        <tr>
-                            <td>End Leave</td>
-                            <td><input type="text" id="enddate" name="enddate"/></td>
-                        </tr>
-                        <tr>
-                            <td>Total</td>
-                            <td><input type="text" id="total" name="total" readonly></td>
-                        </tr>
-                        <tr>
-                            <td>Leave Type</td>
-                            <td><select name="leavetype" />
-                                <%
-                                    if (session.getAttribute("LeaveType") != null) {
-                                        for (LeaveType elem : (List<LeaveType>) session.getAttribute("LeaveType")) {
-                                            out.print("<option "
-                                                    + "value=\"" + elem.getId() + "\" "
-                                                    + (elem.getId().equals(session.getAttribute("LeaveType")) ? "selected" : "") + ">"
-                                                    + elem.getType() + "</option>");
-                                        }
-                                    } else {
-                                        response.sendRedirect("./AddRequestServlet");
-                                    }%>
-                                </select></td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align='center' ><input type="submit" value="Save" name="Submit" /></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div>
-                    <select name="isS1">
-                        <option value="0">Sedang Diproses</option>
-                        <option value="1">Telah Diproses</option>
-                    </select>
+ <form action="AddRequestServlet" method="POST">
+     <a type="button" class="btn btn-success" data-target="#modalRegion" data-toggle="modal">Add Request</a>
+        <div class="modal fade" id="modalRegion" tabindex="-1" role="dialog" 
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header text-center">   
+                        <h3 class="modal-title">Add Request</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body mx-3">
+                        <div class="modal-body mx-5"
+                             <label data-error="wrong" data-success="true">Start Leave</label>
+                            <input type="text" id="startdate" name="startdate" class="form-control form-control-user"/>
+                        </div>
+                        <div class="modal-body mx-5"
+                             <label data-error="wrong" data-success="true">End Leave</label>
+                            <input type="text" id="enddate" name="enddate" class="form-control form-control-user"/>
+                        </div>
+                        <div class="modal-body mx-5"
+                             <label data-error="wrong" data-success="true">Total</label>
+                            <input type="text" id="total" name="total" readonly class="form-control form-control-user" />
+                        </div>
+                        <div class="modal-body mx-5"
+                             <label data-error="wrong" data-success="true">Leave Type</label>
+                            <select type="text" id="leavetype" name="leavetype" class="form-control form-control-user"/>
+                            <% for (LeaveType elem : (List<LeaveType>) session.getAttribute("LeaveType")) {
+                                    out.print("<option "
+                                            + "value=\"" + elem.getId() + "\" "
+                                            + (elem.getId().equals(session.getAttribute("LeaveType")) ? "selected" : "") + ">"
+                                            + elem.getType() + "</option>");
+                                }%>
+                            </select>
+                        </div>  
+                        <div class="modal-footer">
+                            <input type="submit" value="Save" name="Submit" class="btn btn-info" />
+                        </div>
+                    </div>
                 </div>
-
-            </form> 
-
-            <div>
-                <table id="" class=" table table-striped" cellspacing='30' align ='center' border="1">
-
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Id</th>
-                            <th>Request Date</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <%int j = 1;
-                            for (RequestStatus elem : (List<RequestStatus>) session.getAttribute("Request")) {%>
-                        <tr>
-                            <td><%= j++%></td>
-                            <td><%= elem.getRequest().getId()%></td>
-                            <td><%= elem.getDatetime()%></td>
-                            <td><%= elem.getStatus().getType()%></td>
-                        </tr>
-                        <%}%>
-
-                    </tbody>
-                </table>
             </div>
         </div>
+    </form>
+    
+        <table id="" class=" table table-striped" cellspacing='30' align ='center' border="1">
+
+            <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Id</th>
+                    <th>StartDate</th>
+                     <th>EndDate</th>
+                    <th>Request Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%int j = 1;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                for (RequestStatus elem : (List<RequestStatus>) session.getAttribute("Request")) {%>
+                <tr>
+                    <td><%= j++%></td>
+                    <td><%= elem.getRequest().getId()%></td>
+                    <td><%= dateFormat.format(elem.getRequest().getStartdate()) %></td>
+                    <td><%= dateFormat.format(elem.getRequest().getEnddate()) %></td>
+                    <td><%= dateFormat.format(elem.getDatetime()) %></td>
+                    <td><%= elem.getStatus().getType()%></td>
+                </tr>
+                <%}%>
+
+            </tbody>
+        </table>
         <!-- End Container-->
 
 
@@ -132,7 +126,7 @@
         var endBulan = end.split("-")[1];
         var startTahun = start.split("-")[2];
         var endTahun = end.split("-")[2];
-        var totalCuti = (endTanggal - startTanggal + ((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
+        var totalCuti = (endTanggal - startTanggal + 1 +((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
         document.getElementById("total").value = totalCuti.toString();
     });
     $("#enddate").click(function () {
@@ -144,7 +138,7 @@
         var endBulan = end.split("-")[1];
         var startTahun = start.split("-")[2];
         var endTahun = end.split("-")[2];
-        var totalCuti = (endTanggal - startTanggal + ((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
+        var totalCuti = (endTanggal - startTanggal + 1 + ((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
         document.getElementById("total").value = totalCuti.toString();
     });
 </script>

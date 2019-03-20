@@ -29,8 +29,8 @@ import tools.HibernateUtil;
 @WebServlet(name = "HistoryUserServlet", urlPatterns = {"/HistoryUserServlet"})
 public class HistoryUserServlet extends HttpServlet {
 
-    RequestStatusControllerInterface rc = new RequestStatusController(HibernateUtil.getSessionFactory());
-    List<RequestStatus> Req = null;
+    RequestControllerInterface rc = new RequestController(HibernateUtil.getSessionFactory());
+    List<Request> Req = null;
     Request ree = null;
 
     /**
@@ -48,7 +48,7 @@ public class HistoryUserServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             String id = LoginSession.getIdUsername();
-            Req = rc.getAllHistory(id);
+            Req = rc.getByEmployee(id);
             request.getSession().setAttribute("Request", Req);
             response.sendRedirect("HistoryUsers.jsp");
         }

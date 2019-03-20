@@ -68,9 +68,9 @@ public class AddRequestServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            String id = LoginSession.getIdUsername();
+            String id = request.getSession().getAttribute("idLogin").toString();
             Lty = lti.getAll();
-            Req = rci.getHistory(id, isS1);
+            Req = rci.getAllHistory(id);
             request.getSession().setAttribute("LeaveType", Lty);
             request.getSession().setAttribute("Request", Req);
             response.sendRedirect("AddRequest.jsp");
@@ -104,26 +104,28 @@ public class AddRequestServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String id = LoginSession.getIdUsername();
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd-MM-yyyy");
+        String id = request.getSession().getAttribute("idLogin").toString();
+//        System.out.println(id);
         String start = "";
         String end = "";
-        System.out.println(request.getParameter("startdate"));
+        System.out.println("starting ::: "+request.getParameter("startdate"));
+       
         try {
-            start = dateFormat.format(dateFormat.parse(request.getParameter("startdate")));
-            end = dateFormat.format(dateFormat.parse(request.getParameter("enddate")));
+            start = dateFormat.format(dateFormat2.parse(request.getParameter("startdate")));
+            end = dateFormat.format(dateFormat2.parse(request.getParameter("enddate")));
         } catch (ParseException ex) {
             Logger.getLogger(AddRequestServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+         System.out.println("format:::;"+start);
         Date now = new Date();
+        System.out.println(now);
         String hariini = dateFormat.format(now);
         rc.save("", start, end, request.getParameter("total"), "Diproses", id, request.getParameter("leavetype"));
         Request idnext = rc.getLastId();
-        if (!request.getParameter("isS1").equals("0")){
-            isS1 = false;
-        };
 
         if (idnext != null) {
-            if (rci.insert("", hariini, "", idnext.getId() , "S1") != null && lhi.save("", hariini, request.getParameter("total"), "KC4", id) != null ) {
+            if (rci.insert("", hariini, "", idnext.getId(),"S1") != null && lhi.save("", hariini, request.getParameter("total"), "KC4", id) != null ) {
                 processRequest(request, response);
             }
         }

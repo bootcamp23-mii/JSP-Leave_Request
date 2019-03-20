@@ -7,6 +7,8 @@ package servlets;
 
 import controllers.LeaveHistoryController;
 import controllers.LeaveHistoryControllerInterface;
+import controllers.RequestController;
+import controllers.RequestControllerInterface;
 import controllers.RequestStatusController;
 import controllers.RequestStatusControllerInterface;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import models.LeaveHistory;
 import models.LoginSession;
+import models.Request;
 import tools.HibernateUtil;
 
 /**
@@ -28,8 +31,8 @@ import tools.HibernateUtil;
 @WebServlet(name = "HistoryAdminServlet", urlPatterns = {"/HistoryAdminServlet"})
 public class HistoryAdminServlet extends HttpServlet {
 
-    LeaveHistoryControllerInterface lhc = new LeaveHistoryController(HibernateUtil.getSessionFactory());
-    List<LeaveHistory> Req = null;
+    RequestControllerInterface rc = new RequestController(HibernateUtil.getSessionFactory());
+    List<Request> Req = null;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,8 +49,8 @@ public class HistoryAdminServlet extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
             String id = LoginSession.getIdUsername();
             /* TODO output your page here. You may use following sample code. */
-            Req = lhc.getAll("");
-            request.getSession().setAttribute("Leavehistory", Req);
+            Req = rc.getAll("");
+            request.getSession().setAttribute("Request", Req);
             response.sendRedirect("HistoryAdmin.jsp");
         }
     }
@@ -67,14 +70,16 @@ public class HistoryAdminServlet extends HttpServlet {
         String action = request.getParameter("action");
         if (action != null) {
             if (action.equalsIgnoreCase("delete")) {
-                lhc.delete(request.getParameter("id"));
+                rc.delete(request.getParameter("id"));
             } else if (action.equalsIgnoreCase("update")) {
-                LeaveHistory lh = lhc.getById(request.getParameter("id"));
-                request.getSession().setAttribute("id", lh.getId());
-                request.getSession().setAttribute("total", lh.getTotal());
-                request.getSession().setAttribute("datetime", lh.getDatetime());
-                request.getSession().setAttribute("description", lh.getDescription().getDescription());
-                request.getSession().setAttribute("employee", lh.getEmployee().getId());
+                Request r = rc.getById(request.getParameter("id"));
+                request.getSession().setAttribute("id", r.getId());
+                request.getSession().setAttribute("startdate", r.getStartdate());
+                request.getSession().setAttribute("enddate", r.getEnddate());
+                request.getSession().setAttribute("total", r.getTotal());
+                request.getSession().setAttribute("leavetype", r.getLeavetype().getType());
+                request.getSession().setAttribute("employee", r.getEmployee().getName());
+                request.getSession().setAttribute("status", r.getStatus());
             }
         }
         processRequest(request, response);
@@ -92,11 +97,12 @@ public class HistoryAdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         if (request.getParameter("historyAdminDataTime") == null) {
-            if (lhc.delete(request.getParameter("historyAdminDeleteId")) != null) {
+            if (rc.delete(request.getParameter("historyAdminDeleteId")) != null) {
                 processRequest(request, response);
             }
         } else {
-            if (lhc.save(request.getParameter("historyAdminId"), request.getParameter("historyAdminDataTime"), request.getParameter("historyAdminTotal"), request.getParameter("historyAdminDescription"), request.getParameter("historyAdminEmployee")) != null) {
+             if (rc.save(request.getParameter("id"), request.getParameter("startdate"), request.getParameter("enddate"), request.getParameter("total"), request.getParameter("leavetype"), request.getParameter("employee"),
+                    request.getParameter("status")) != null) {
                 processRequest(request, response);
             }
         }
