@@ -175,7 +175,7 @@ public class GeneralDAO<T> implements Interface<T> {
         transaction = session.beginTransaction();
         try {
             if (isS1) {
-                obj = session.createQuery("from RequestStatus where status = 'S1' and Request in(from Request where employee in(from Employee where idmanager = '" + keyword + "')) order by datetime desc").list();
+                obj = session.createQuery("from RequestStatus where status = 'S1' and request in(from Request where employee in(from Employee where idmanager = '" + keyword + "')) order by datetime desc").list();
 
             } else {
                 System.out.println("THERE NO NEED TO WORRY");

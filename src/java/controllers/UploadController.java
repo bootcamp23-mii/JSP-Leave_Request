@@ -17,6 +17,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import models.Employee;
+import models.Job;
+import models.MarriedStatus;
 import org.hibernate.SessionFactory;
 
 /**
@@ -42,7 +44,7 @@ public class UploadController implements UploadControllerInterface {
             byte[] photo = new byte[is.available()];
             is.read(photo);
             is.close();
-            if (dao.saveOrDelete(new Employee(id, data.getName(), data.getGendertype(), data.getLeavetotal(), data.getEmail(), data.getPassword(), data.getMarriedstatus(), data.getIdmanager() ,data.getJob(), data.getJoindate(), photo), true)) {
+            if (dao.saveOrDelete(new Employee(id, data.getName(), data.getGendertype(), data.getLeavetotal(), data.getEmail(), data.getPassword(), new MarriedStatus(data.getMarriedstatus().getId()), new Employee(data.getIdmanager().getId()) , new Job(data.getJob().getId()), data.getJoindate(), photo), true)) {
                 return true;
             }
         } catch (Exception ex) {

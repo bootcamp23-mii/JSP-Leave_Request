@@ -21,6 +21,10 @@
                 <h1 class="h3 mb-0 text-gray-800">Setting User</h1>
                 <a class="btn btn-success" data-target="#modalUser" data-toggle="modal">Add User</a>
             </div>
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">     
+                <a class="btn btn-success" data-target="#modalUpload" data-toggle="modal">Upload photo</a>
+            </div>
+            
             <!--modaladduser-->
             <form class="w3-container" action="AddUserServlet" method="POST">
                 <div class="modal fade" id="modalUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -157,6 +161,7 @@
                             </div>
                             <div class="md-form my-2">
                                 <label data-error="wrong" data-success="true">Photo</label>
+                                <!--space utk foto-->
                             </div>
 
                         </div>
@@ -285,6 +290,43 @@
                 </div>
             </form>
 
+            <!--modalupload-->
+            <form class="w3-container" action="UploadServlet" method="POST">
+                <div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content" >
+                            <div class="modal-header text-center">
+                                <h3 class="modal-title">Upload</h3>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body mx-3">
+                                <div class="md-form my-5">
+                                    <div class="my-2">
+                                        <label data-error="wrong" data-success="true">Upload Photo for</label>
+                                        <select name="idemployee" class="form-control">
+                                        <% for (Employee elem : (List<Employee>) session.getAttribute("employee")) {
+                                                out.print("<option "
+                                                        + "value=\"" + elem.getId() + "\" "
+                                                        + (elem.getId().equals(session.getAttribute("employee")) ? "selected" : "") + ">"
+                                                        + elem.getName() + "</option>");
+                                            }%>
+                                    </select>
+                                    </div>
+                                    <div class="my-2">
+                                        <input type="file" name="pathFile" id="path-f" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <input class="btn btn-outline-success" type="submit" value="UP!" name="up" />
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
 
 
             <div>

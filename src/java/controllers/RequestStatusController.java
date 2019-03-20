@@ -54,7 +54,7 @@ public class RequestStatusController implements RequestStatusControllerInterface
     @Override
     public String update(String id, String datetime, String description, String request, String status) {
          try {
-            if (spdao.insertOrUpdate(new RequestStatus(id, sdf.parse(datetime), description, new Request(request), new Status(status)), true)) {
+            if (spdao.insertOrUpdate(new RequestStatus(id, sdf.parse(datetime), description, new Request(request), new Status(status)), false)) {
                 return "DATA UPDATED FOR ID = " + id;
             } else {
                 return "UPDATE FAILED";
