@@ -48,7 +48,13 @@ public class RequestStatusController implements RequestStatusControllerInterface
 
     @Override
     public List<RequestStatus> getData(String key) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return spdao.getData(key);
+    }
+    
+   
+    @Override
+     public RequestStatus getById(String key) {
+        return spdao.getById(key);
     }
 
     @Override

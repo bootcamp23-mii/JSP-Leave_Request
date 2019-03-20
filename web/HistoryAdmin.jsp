@@ -4,6 +4,7 @@
     Author     : acer
 --%>
 
+<%@page import="models.RequestStatus"%>
 <%@page import="models.Request"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="models.LeaveHistory"%>
@@ -12,7 +13,7 @@
 
 <%@include file="Header.jsp"%>
 
-<form action="HistoryAdminServlet" method="POST">
+<!--<form action="HistoryAdminServlet" method="POST">
     <div class="modal fade" id="modalHistory" tabindex="-1" role="dialog" 
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -23,7 +24,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <!--modal action-->
+                modal action
                 <div class="modal-body mx-3">
                     <div class="modal-body mx-5">
                         <label data-error="wrong" data-success="true">ID</label>
@@ -60,7 +61,7 @@
             </div>
         </div>
     </div>
-</form>
+</form>-->
 
 <!--modal Detail-->
 <div class="modal fade" id="modalDetail" tabindex="-1" role="dialog" 
@@ -125,7 +126,7 @@
                             <label data-error="wrong" data-success="true">Are you sure want to delete?</label>
                         </div>
                         <div class="my-2">
-                            <input type="text" name="idDelete-r" id="idDelete-r" class="form-control" readonly>
+                            <input type="text" name="idDelete" id="idDelete-r" class="form-control" readonly>
                         </div>
                         <div class="my-2">
                             <input type="text" name="employee" id="employeeDelete-r" class="form-control" readonly>
@@ -142,7 +143,7 @@
 
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">     
-    <h1 class="h3 mb-0 text-gray-800">History of Your Request</h1>
+    <h1 class="h3 mb-0 text-gray-800">History of Request</h1>
 </div>
 
 <div>
@@ -150,6 +151,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>Employee Name</th>
                 <th>Start</th>
                 <th>End</th>
                 <th>Total</th>
@@ -161,23 +163,21 @@
         <tbody>
             <%int j = 1;
                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                for (Request elem : (List<Request>) session.getAttribute("Request")) {%>
+                for (RequestStatus elem : (List<RequestStatus>) session.getAttribute("Request")) {%>
             <tr>
-                <td><%= j++%></td>                                      
-                <td><%= dateFormat.format(elem.getStartdate())%></td>
-                <td><%= dateFormat.format(elem.getEnddate())%></td>
-                <td><%= elem.getTotal()%></td>
-                <td><%= elem.getStatus()%></td>
+                <td><%= j++%></td>
+                <td><%= elem.getRequest().getEmployee().getName() %></td>
+                <td><%= dateFormat.format(elem.getRequest().getStartdate())%></td>
+                <td><%= dateFormat.format(elem.getRequest().getEnddate())%></td>
+                <td><%= elem.getRequest().getTotal()%></td>
+                <td><%= elem.getStatus().getType() %></td>
                 <td><button class="btn btn-success" data-target="#modalDetail" data-toggle="modal" data-getid="<%= elem.getId()%>" 
-                            data-getstartdate="<%= dateFormat.format(elem.getStartdate())%>" data-getenddate="<%= dateFormat.format(elem.getEnddate())%>" data-gettotal="<%= elem.getTotal()%>"
-                            data-getleavetype="<%= elem.getLeavetype().getType()%>" data-getemployee="<%= elem.getEmployee().getName()%>"
-                            data-getstatus="<%= elem.getStatus()%>">Details</button>
+                            data-getstartdate="<%= elem.getRequest().getStartdate() %>" data-getenddate="<%= elem.getRequest().getEnddate() %>" data-gettotal="<%= elem.getRequest().getTotal() %>"
+                            data-getleavetype="<%= elem.getRequest().getLeavetype().getType() %>" data-getemployee="<%= elem.getRequest().getEmployee().getName() %>"
+                            data-getstatus="<%= elem.getStatus().getType() %>">Details</button>
                 </td>
-                <td><button class="btn btn-success" data-target="#modalHistory" data-toggle="modal" data-getid="<%= elem.getId()%>" 
-                            data-getstartdate="<%= dateFormat.format(elem.getStartdate())%>" data-getenddate="<%= dateFormat.format(elem.getEnddate())%>" data-gettotal="<%= elem.getTotal()%>"
-                            data-getleavetype="<%= elem.getLeavetype().getType()%>" data-getemployee="<%= elem.getEmployee().getName()%>"
-                            data-getstatus="<%= elem.getStatus()%>">Edit</button>
-                    <button class="btn btn-danger" data-target="#modalDelete" data-toggle="modal" data-getiddelete="<%= elem.getId()%>" data-getemployee="<%= elem.getEmployee().getName()%>">Hapus</button>
+                <td>
+                    <button class="btn btn-danger" data-target="#modalDelete" data-toggle="modal" data-getiddelete="<%= elem.getId()%>" data-getemployee="<%= elem.getRequest().getEmployee().getName()%>">Delete</button>
                 </td>
             </tr>
             <%}%>

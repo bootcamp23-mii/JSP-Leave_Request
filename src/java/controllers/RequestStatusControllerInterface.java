@@ -22,6 +22,8 @@ public interface RequestStatusControllerInterface {
     public List<RequestStatus> getAll(String key);
 
     public List<RequestStatus> getData(String key);
+    
+    public RequestStatus getById(String key);
 
 //    public String save(String id, String start, String end, String total, String karyawan, String jenisCuti);
     public String update(String id, String datetime, String description, String request, String status);
