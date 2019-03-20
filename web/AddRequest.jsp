@@ -15,9 +15,9 @@
 
 <%@include file="Header.jsp"%>
 <body>
-<!-- Content Wrapper -->
- <form action="AddRequestServlet" method="POST">
-     <a type="button" class="btn btn-success" data-target="#modalRegion" data-toggle="modal">Add Request</a>
+    <!-- Content Wrapper -->
+    <form action="AddRequestServlet" method="POST">
+        <a type="button" class="btn btn-success" data-target="#modalRegion" data-toggle="modal">Add Request</a>
         <div class="modal fade" id="modalRegion" tabindex="-1" role="dialog" 
              aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -60,51 +60,50 @@
             </div>
         </div>
     </form>
-    
-        <table id="" class=" table table-striped" cellspacing='30' align ='center' border="1">
 
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Id</th>
-                    <th>StartDate</th>
-                     <th>EndDate</th>
-                    <th>Request Date</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%int j = 1;
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-                for (RequestStatus elem : (List<RequestStatus>) session.getAttribute("Request")) {%>
-                <tr>
-                    <td><%= j++%></td>
-                    <td><%= elem.getRequest().getId()%></td>
-                    <td><%= dateFormat.format(elem.getRequest().getStartdate()) %></td>
-                    <td><%= dateFormat.format(elem.getRequest().getEnddate()) %></td>
-                    <td><%= dateFormat.format(elem.getDatetime()) %></td>
-                    <td><%= elem.getStatus().getType()%></td>
-                </tr>
-                <%}%>
+    <table id="" class=" table table-striped" cellspacing='30' align ='center' border="1">
 
-            </tbody>
-        </table>
-        <!-- End Container-->
+        <thead>
+            <tr>
+                <th>No.</th>
+                <!--                    <th>Id</th>-->
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>Request Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%int j = 1;
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                    for (RequestStatus elem : (List<RequestStatus>) session.getAttribute("Request")) {%>
+            <tr>
+                <td><%= j++%></td>
+                <td><%= dateFormat.format(elem.getRequest().getStartdate())%></td>
+                <td><%= dateFormat.format(elem.getRequest().getEnddate())%></td>
+                <td><%= dateFormat.format(elem.getDatetime())%></td>
+                <td><%= elem.getStatus().getType()%></td>
+            </tr>
+            <%}%>
 
+        </tbody>
+    </table>
+    <!-- End Container-->
 
 
-        <!-- Footer -->
-        <footer class="sticky-footer bg-white">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright &copy; Leave Request Website 2019</span>
-                </div>
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Leave Request Website 2019</span>
             </div>
-        </footer>
-        <!-- End of Footer -->
+        </div>
+    </footer>
+    <!-- End of Footer -->
 
-    </div>
-    <!-- End of Content Wrapper -->
+</div>
+<!-- End of Content Wrapper -->
 
 </div>
 <!-- End of Page Wrapper -->
@@ -126,7 +125,7 @@
         var endBulan = end.split("-")[1];
         var startTahun = start.split("-")[2];
         var endTahun = end.split("-")[2];
-        var totalCuti = (endTanggal - startTanggal + 1 +((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
+        var totalCuti = (endTanggal - startTanggal + 1 + ((endBulan - startBulan) * 30) + ((endTahun - startTahun) * 360));
         document.getElementById("total").value = totalCuti.toString();
     });
     $("#enddate").click(function () {
