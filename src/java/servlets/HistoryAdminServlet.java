@@ -96,8 +96,8 @@ public class HistoryAdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (request.getParameter("historyAdminDataTime") == null) {
-            if (rc.delete(request.getParameter("historyAdminDeleteId")) != null) {
+        if (request.getParameter("historyAdmin") == null) {
+            if (rc.delete(request.getParameter("historyDelete")) != null) {
                 processRequest(request, response);
             }
         } else {
