@@ -12,7 +12,7 @@
         <title>Success</title>
     </head>
     <body>
-        <h1>Congratulation!</h1>
-        <h2>Activation has been Success</h2>
+    <center><h1>Congratulation!</h1>
+        <h2>Activation has been Success</h2></center>
     </body>
 </html>
